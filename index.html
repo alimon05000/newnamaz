@@ -1,0 +1,557 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no" />
+  <title>WAQT — Liquid Glass</title>
+  <meta name="theme-color" content="#0b0f14" />
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root{
+      --bg:#070a0f;
+      --glass:rgba(255,255,255,.08);
+      --glass-strong:rgba(255,255,255,.12);
+      --stroke:rgba(255,255,255,.18);
+      --txt:#e9f1ff;
+      --muted:#9fb0c9;
+      --accent:#7cc7ff;
+      --danger:#ff637d;
+      --ok:#7dffa5;
+      --shadow:0 20px 60px rgba(0,0,0,.55), inset 0 1px 0 rgba(255,255,255,.06);
+      --radius:20px;
+      --blur:24px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;background:radial-gradient(1200px 800px at 20% -10%, #15304a, transparent),
+      radial-gradient(900px 700px at 120% 120%, #2a0f3c, transparent),
+      linear-gradient(160deg,#05070b,#0b1220 60%,#0b0f14);
+      color:var(--txt);font:500 16px/1.4 ui-rounded,ui-sans-serif,-apple-system,BlinkMacSystemFont,"SF Pro Rounded","Inter",system-ui,Segoe UI,Roboto;
+      -webkit-font-smoothing:antialiased;overscroll-behavior:none;
+    }
+    .wrap{max-width:920px;margin:0 auto;padding:env(safe-area-inset-top) 16px calc(16px + env(safe-area-inset-bottom));}
+
+    /* Liquid glass cards */
+    .glass{
+      background:var(--glass);
+      backdrop-filter: blur(var(--blur)) saturate(140%);
+      -webkit-backdrop-filter: blur(var(--blur)) saturate(140%);
+      border:1px solid var(--stroke);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+    }
+    header{
+      position:sticky;top:0;z-index:20;padding-top:8px;margin-bottom:12px;
+      background:linear-gradient(180deg, rgba(5,7,11,.9), rgba(5,7,11,.35) 60%, transparent);
+      backdrop-filter: blur(10px);
+    }
+    .nav{
+      display:flex;gap:10px;align-items:center;justify-content:space-between;
+      padding:10px 12px;
+    }
+    .brand{display:flex;gap:10px;align-items:center}
+    .logo{
+      width:36px;height:36px;border-radius:12px;
+      background:linear-gradient(140deg,#69e0ff,#7d9bff 55%,#b07dff);
+      box-shadow:0 10px 30px rgba(124,199,255,.45);
+    }
+    .brand h1{margin:0;font-size:18px;letter-spacing:.4px}
+    .install-btn, .tiny{
+      border:1px solid var(--stroke);background:var(--glass-strong);color:var(--txt);
+      padding:10px 14px;border-radius:14px;cursor:pointer;backdrop-filter: blur(12px);
+      font-weight:600;
+    }
+    .tiny{padding:6px 10px;font-size:12px;opacity:.85}
+    .grid{display:grid;gap:14px}
+    @media(min-width:780px){.grid{grid-template-columns:1.2fr .8fr}}
+
+    /* Segmented tabs (iOS) */
+    .tabs{
+      display:flex;gap:6px;padding:6px;background:var(--glass);border:1px solid var(--stroke);
+      border-radius:18px;backdrop-filter: blur(16px);width:100%;
+    }
+    .tab{flex:1;text-align:center;padding:10px 8px;border-radius:14px;cursor:pointer;user-select:none}
+    .tab.active{background:linear-gradient(180deg, rgba(255,255,255,.18), rgba(255,255,255,.06));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,.25), 0 8px 20px rgba(0,0,0,.3);}
+    .views > section{display:none}
+    .views > section.active{display:block;animation:fade .35s ease}
+    @keyframes fade{from{opacity:.4;transform:translateY(4px)}to{opacity:1;transform:none}}
+
+    /* Info rows */
+    .row{display:flex;justify-content:space-between;align-items:center;padding:12px 14px;border-bottom:1px dashed rgba(255,255,255,.12)}
+    .row:last-child{border-bottom:0}
+    .pray{font-weight:700}
+    .next{font-size:13px;color:var(--muted)}
+    .badge{padding:4px 8px;border-radius:12px;background:rgba(124,199,255,.15);border:1px solid rgba(124,199,255,.35)}
+    .success{background:rgba(25,204,140,.16);border-color:rgba(25,204,140,.4)}
+    .danger{background:rgba(255,99,125,.16);border-color:rgba(255,99,125,.35)}
+
+    /* Sliders / switches (iOS 17 vibe) */
+    .switch{position:relative;width:56px;height:34px;background:rgba(255,255,255,.14);border:1px solid var(--stroke);border-radius:999px;transition:.2s}
+    .switch input{appearance:none;width:100%;height:100%;margin:0;outline:0}
+    .knob{position:absolute;top:2px;left:2px;width:30px;height:30px;border-radius:50%;
+      background:linear-gradient(160deg,#eaf6ff,#cfe8ff);box-shadow:0 6px 16px rgba(0,0,0,.4), inset 0 1px 0 #fff;transition:.25s}
+    .switch input:checked + .knob{left:24px; background:linear-gradient(160deg,#d9fff1,#bfffe4)}
+    .slider{width:100%}
+
+    /* Compass/Qibla */
+    .compass{display:grid;place-items:center;height:280px}
+    .dial{
+      width:240px;height:240px;border-radius:50%;position:relative;
+      background:radial-gradient(circle at 50% 40%, rgba(255,255,255,.14), rgba(255,255,255,.05));
+      border:1px solid var(--stroke);box-shadow:var(--shadow)
+    }
+    .needle, .qibla-needle{
+      position:absolute;left:50%;top:50%;transform-origin:50% calc(100% - 20px);
+      width:4px;height:100px;border-radius:2px;transform:translate(-50%,-80%) rotate(0deg);
+      background:linear-gradient(180deg,#ff9db0,#ff637d)
+    }
+    .qibla-needle{height:110px;background:linear-gradient(180deg,#9df4ff,#58d8ff)}
+    .north{position:absolute;top:6px;left:50%;transform:translateX(-50%);font-size:12px;color:var(--muted)}
+    .dot{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.2), 0 0 0 12px rgba(255,255,255,.08)}
+
+    /* Footer */
+    footer{margin-top:16px;color:var(--muted);font-size:12px;text-align:center}
+
+    /* City select pill */
+    .pill{display:flex;gap:8px;flex-wrap:wrap}
+    .chip{
+      padding:8px 12px;border-radius:999px;border:1px solid var(--stroke);
+      background:var(--glass);cursor:pointer;font-weight:600
+    }
+    .chip.active{background:rgba(124,199,255,.15);border-color:rgba(124,199,255,.5)}
+    .hint{font-size:12px;color:var(--muted);margin-top:6px}
+    .kbd{padding:1px 6px;border:1px solid var(--stroke);border-radius:6px;background:rgba(255,255,255,.08);font-family:ui-monospace,monospace}
+
+    .hero{
+      padding:16px;border-radius:24px;
+      background:
+        radial-gradient(120px 80px at 12% 12%, rgba(124,199,255,.25), transparent 60%),
+        radial-gradient(160px 100px at 80% 18%, rgba(255,99,125,.20), transparent 65%),
+        var(--glass);
+      border:1px solid var(--stroke);backdrop-filter: blur(28px);box-shadow:var(--shadow)
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="nav glass">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <h1>WAQT — точное время намазов</h1>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button id="install" class="install-btn" hidden>Установить</button>
+          <button id="refresh" class="tiny" title="Обновить">↻</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid">
+      <main class="glass" style="padding:16px">
+        <div class="hero">
+          <div class="tabs" role="tablist" aria-label="Разделы">
+            <div class="tab active" data-tab="today" role="tab" aria-selected="true">Сегодня</div>
+            <div class="tab" data-tab="qibla" role="tab">Кибла</div>
+            <div class="tab" data-tab="tasbih" role="tab">Тасбих</div>
+            <div class="tab" data-tab="settings" role="tab">Настройки</div>
+          </div>
+        </div>
+
+        <div class="views" style="margin-top:14px">
+          <!-- TODAY -->
+          <section id="view-today" class="active" aria-labelledby="Сегодня">
+            <div class="row">
+              <div>
+                <div class="next">Город</div>
+                <div id="cityLabel" class="pray">—</div>
+              </div>
+              <div class="badge"><span id="dateLabel">—</span></div>
+            </div>
+            <div id="times"></div>
+
+            <div class="hint">Подсказка: тап по времени — установить локальное уведомление (если поддерживается).</div>
+          </section>
+
+          <!-- QIBLA -->
+          <section id="view-qibla" aria-labelledby="Кибла">
+            <div class="row">
+              <div>
+                <div class="next">Направление на Каабу</div>
+                <div class="pray" id="qiblaAngle">—°</div>
+              </div>
+              <div class="badge">Азимут</div>
+            </div>
+            <div class="compass">
+              <div class="dial">
+                <div class="north">N</div>
+                <div class="needle" id="needle"></div>
+                <div class="qibla-needle" id="qneedle"></div>
+                <div class="dot"></div>
+              </div>
+            </div>
+            <div class="hint">Разреши доступ к ориентации устройства. На iOS зайди в <span class="kbd">Настройки → Safari → Доступ к движению</span>.</div>
+          </section>
+
+          <!-- TASBIH -->
+          <section id="view-tasbih" aria-labelledby="Тасбих">
+            <div class="row">
+              <div><div class="next">Счётчик</div><div class="pray"><span id="count">0</span></div></div>
+              <div style="display:flex;gap:8px">
+                <button class="tiny" id="inc">+1</button>
+                <button class="tiny" id="reset">Сброс</button>
+              </div>
+            </div>
+            <div class="row">
+              <label class="next">Цель: <span id="goalLabel">33</span></label>
+              <input id="goal" class="slider" type="range" min="10" max="200" step="1" value="33"/>
+            </div>
+            <div class="hint">Пресеты: <span class="chip" data-goal="33">33</span> <span class="chip" data-goal="99">99</span> <span class="chip" data-goal="100">100</span></div>
+          </section>
+
+          <!-- SETTINGS -->
+          <section id="view-settings" aria-labelledby="Настройки">
+            <div class="row">
+              <div>
+                <div class="next">Метод расчёта</div>
+                <div class="pray" id="methodLabel">MWL (18°/17°)</div>
+              </div>
+              <div>
+                <select id="method" class="tiny">
+                  <option value="MWL">MWL (18°/17°)</option>
+                  <option value="EGYPT">Египет (19.5°/17.5°)</option>
+                  <option value="UMM">Умм аль-Кура (Фаджр 18.5°, Иша фикс.)</option>
+                  <option value="ISNA">ISNA (15°/15°)</option>
+                </select>
+              </div>
+            </div>
+            <div class="row">
+              <div>
+                <div class="next">Использовать геолокацию</div>
+                <div class="hint">Иначе — выбранный город</div>
+              </div>
+              <label class="switch">
+                <input id="geo" type="checkbox"><span class="knob"></span>
+              </label>
+            </div>
+            <div class="row">
+              <div class="next">Выбор города</div>
+              <div class="badge">Дагестан</div>
+            </div>
+            <div class="pill" id="cities"></div>
+            <div class="hint">Добавь на Домой (iOS/Android) → приложение откроется в полноэкранном режиме.</div>
+          </section>
+        </div>
+      </main>
+
+      <aside class="glass" style="padding:16px">
+        <h3 style="margin-top:0">Следующий намаз</h3>
+        <div id="nextBox" class="row" style="border-radius:16px;background:rgba(25,204,140,.12);border:1px solid rgba(25,204,140,.35)">
+          <div>
+            <div class="next">—</div>
+            <div class="pray" id="nextName">—</div>
+          </div>
+          <div class="badge success" id="nextEta">—</div>
+        </div>
+        <h3>Опции</h3>
+        <div class="row">
+          <div class="next">24-часовой формат</div>
+          <label class="switch"><input id="h24" type="checkbox" checked><span class="knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="next">Уведомления</div>
+          <label class="switch"><input id="notify" type="checkbox"><span class="knob"></span></label>
+        </div>
+        <div class="row">
+          <div class="next">Авто-обновление расчётов</div>
+          <label class="switch"><input id="auto" type="checkbox" checked><span class="knob"></span></label>
+        </div>
+      </aside>
+    </div>
+
+    <footer>
+      v1.0 · Работает оффлайн · Made to beat “deepseek” 😉
+    </footer>
+  </div>
+
+  <script>
+  /* ====== DATA: города (встроенные координаты) ====== */
+  const CITIES = [
+    {id:'mahachkala', name:'Махачкала', lat:42.9849, lon:47.5047, tz:3},
+    {id:'kaspiysk',   name:'Каспийск',  lat:42.8820, lon:47.6396, tz:3},
+    {id:'belidzhi',   name:'Белиджи',   lat:41.8918, lon:48.4125, tz:3},
+    {id:'khasavyurt', name:'Хасавюрт',  lat:43.2505, lon:46.5853, tz:3},
+    {id:'kabir',      name:'Кабир',     lat:41.5603, lon:48.0448, tz:3},
+    {id:'akhty',      name:'Ахты',      lat:41.4650, lon:47.7390, tz:3}
+  ];
+  const MAKKAH = {lat:21.4225, lon:39.8262};
+
+  /* ====== UTILS ====== */
+  const $ = s => document.querySelector(s);
+  const el = html => Object.assign(document.createElement('div'), {innerHTML:html}).firstElementChild;
+  const pad = n => String(n).padStart(2,'0');
+  const fmt = (d, h24=true) => {
+    let h = d.getHours(), m = d.getMinutes();
+    if(!h24){ const suf=h>=12?' PM':' AM'; h=(h%12)||12; return `${h}:${pad(m)}${suf}`; }
+    return `${pad(h)}:${pad(m)}`;
+  };
+
+  /* ====== Астрономия: расчёт намазов (легковесная реализация) ======
+     Методика близка к PrayTimes/Adhan: солнечная деклинация, уравнение времени,
+     высоты для Фаджр/Иша по углам; Аср — по тени (стандарт 1). */
+  const DEG=Math.PI/180;
+  function julian(y,m,day){
+    if(m<=2){y-=1; m+=12;}
+    const A=Math.floor(y/100), B=2-A+Math.floor(A/4);
+    return Math.floor(365.25*(y+4716))+Math.floor(30.6001*(m+1))+day+B-1524.5;
+  }
+  function solarPosition(jd){
+    const D=jd-2451545.0;
+    const g=(357.529 + 0.98560028*D)*DEG;
+    const q=(280.459 + 0.98564736*D)*DEG;
+    const L=(q + (1.915*Math.sin(g) + 0.020*Math.sin(2*g))*DEG);
+    const e=(23.439 - 0.00000036*D)*DEG;
+    const RA=Math.atan2(Math.cos(e)*Math.sin(L), Math.cos(L));
+    const dec=Math.asin(Math.sin(e)*Math.sin(L));
+    let EqT = q - RA;
+    EqT = ((EqT+Math.PI)%(2*Math.PI))-Math.PI; // wrap
+    const eqTime = 4*(EqT/DEG); // minutes
+    return {dec, eqTime}; // деклинация и уравнение времени
+  }
+  function timeForAngle(lat, dec, angle){
+    // часовой угол (в градусах) для данного солнечного возвышения (угол отрицательный над горизонтом)
+    const term=(Math.sin(angle*DEG) - Math.sin(lat*DEG)*Math.sin(dec))/(Math.cos(lat*DEG)*Math.cos(dec));
+    if(term<-1 || term>1) return null;
+    return Math.acos(term)/DEG; // в градусах
+  }
+  function computeTimes(date, lat, lon, tz, method='MWL', asrFactor=1){
+    // Настройки углов
+    let FAJR=18, ISHA=17, ISHAFixed=null;
+    if(method==='EGYPT'){FAJR=19.5; ISHA=17.5;}
+    if(method==='UMM'){FAJR=18.5; ISHAFixed=90;} // Иша 90 мин после Магриба (прибл. вне Рамадана)
+    if(method==='ISNA'){FAJR=15; ISHA=15;}
+
+    const y=date.getFullYear(), m=date.getMonth()+1, d=date.getDate();
+    const jd = julian(y,m,d);
+    const {dec, eqTime} = solarPosition(jd+0.5); // полдень текущих суток
+    const lngHour = lon/15;
+    const noon = (720 - eqTime) + (tz*60) - (15*lngHour*4); // минуты от UTC полуночь → местный солнечный полдень
+
+    // Высота солнца в зените для Магриб/Иша (коррекция рефракции 0.833°)
+    const H_sun = timeForAngle(lat, dec, -0.833);
+    const H_fajr = timeForAngle(lat, dec, -FAJR);
+    const H_isha = ISHAFixed ? null : timeForAngle(lat, dec, -ISHA);
+
+    if(H_sun==null || H_fajr==null || (!ISHAFixed && H_isha==null)) return null; // полярные случаи (здесь не ожидаются)
+
+    // Восход/Заход
+    const sunrise = noon - (H_sun*4);
+    const sunset  = noon + (H_sun*4);
+
+    // Зухр — около истинного полдня (+ ~1 мин, берём +1м для разделения)
+    const dhuhr = noon + 1;
+
+    // Аср: часовой угол при тени = asrFactor + tan(|φ-δ|)
+    const phi = Math.abs(Math.tan(lat*DEG - dec));
+    const asrAngle = Math.acos((Math.sin(Math.atan(1/(asrFactor+phi))) - Math.sin(lat*DEG)*Math.sin(dec)) / (Math.cos(lat*DEG)*Math.cos(dec)))/DEG;
+    const asr = noon + asrAngle*4;
+
+    // Фаджр/Иша
+    const fajr = noon - (H_fajr*4);
+    const isha = ISHAFixed ? (sunset + ISHAFixed) : (noon + H_isha*4);
+
+    // Вернём как Date
+    function m2d(min){ const dt = new Date(date); dt.setHours(0,0,0,0); dt.setMinutes(min); return dt; }
+    return {
+      Fajr:m2d(fajr), Sunrise:m2d(sunrise), Dhuhr:m2d(dhuhr),
+      Asr:m2d(asr), Maghrib:m2d(sunset), Isha:m2d(isha)
+    };
+  }
+
+  /* ====== Qibla азимут ====== */
+  function qiblaBearing(lat, lon){
+    const φ1=lat*DEG, λ1=lon*DEG, φ2=MAKKAH.lat*DEG, λ2=MAKKAH.lon*DEG;
+    const dλ=λ2-λ1;
+    const y=Math.sin(dλ)*Math.cos(φ2);
+    const x=Math.cos(φ1)*Math.sin(φ2)-Math.sin(φ1)*Math.cos(φ2)*Math.cos(dλ);
+    let θ = Math.atan2(y,x)/DEG;
+    return (θ+360)%360; // градусы от севера по часовой
+  }
+
+  /* ====== STATE ====== */
+  const state = {
+    method: localStorage.getItem('method') || 'MWL',
+    h24: localStorage.getItem('h24')!=='0',
+    geo: localStorage.getItem('geo')==='1',
+    city: localStorage.getItem('city') || CITIES[0].id,
+    notify: localStorage.getItem('notify')==='1',
+    asr: 1
+  };
+
+  /* ====== UI: вкладки ====== */
+  document.querySelectorAll('.tab').forEach(t=>{
+    t.addEventListener('click', ()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      const key=t.dataset.tab;
+      document.querySelectorAll('.views > section').forEach(v=>v.classList.remove('active'));
+      document.getElementById('view-'+key).classList.add('active');
+    });
+  });
+
+  /* ====== UI: города ====== */
+  const $cities = $('#cities');
+  CITIES.forEach(c=>{
+    const chip = el(`<span class="chip" data-id="${c.id}">${c.name}</span>`);
+    if(c.id===state.city) chip.classList.add('active');
+    chip.onclick=()=>{ document.querySelectorAll('.chip').forEach(x=>x.classList.remove('active')); chip.classList.add('active'); state.city=c.id; localStorage.setItem('city',state.city); updateAll(); };
+    $cities.appendChild(chip);
+  });
+
+  /* ====== Настройки ====== */
+  const $method=$('#method'), $h24=$('#h24'), $geo=$('#geo'), $notify=$('#notify');
+  $method.value=state.method;
+  $h24.checked=state.h24;
+  $geo.checked=state.geo;
+  $notify.checked=state.notify;
+
+  $method.onchange=()=>{ state.method=$method.value; localStorage.setItem('method',state.method); $('#methodLabel').textContent=$method.selectedOptions[0].textContent; updateAll(); };
+  $h24.onchange=()=>{ state.h24=$h24.checked; localStorage.setItem('h24', state.h24?'1':'0'); updateAll(); };
+  $geo.onchange=()=>{ state.geo=$geo.checked; localStorage.setItem('geo', state.geo?'1':'0'); updateAll(); };
+  $notify.onchange=()=>{ state.notify=$notify.checked; localStorage.setItem('notify', state.notify?'1':'0'); };
+
+  $('#refresh').onclick = ()=> updateAll();
+
+  /* ====== TASBIH ====== */
+  let count= +(localStorage.getItem('tasbih')||0);
+  const $count=$('#count'); const $goal=$('#goal'); const $goalLabel=$('#goalLabel');
+  function saveTasbih(){ localStorage.setItem('tasbih', count); }
+  function updateTasbih(){ $count.textContent=count; }
+  $('#inc').onclick=()=>{ count++; updateTasbih(); saveTasbih(); };
+  $('#reset').onclick=()=>{ count=0; updateTasbih(); saveTasbih(); };
+  $goal.oninput=()=>{ $goalLabel.textContent=$goal.value; };
+  document.querySelectorAll('[data-goal]').forEach(b=> b.onclick=()=>{$goal.value=b.dataset.goal; $goalLabel.textContent=$goal.value;});
+  updateTasbih();
+
+  /* ====== PWA install ====== */
+  let deferredPrompt;
+  window.addEventListener('beforeinstallprompt', (e)=>{
+    e.preventDefault(); deferredPrompt=e; const btn=$('#install'); btn.hidden=false;
+    btn.onclick=async()=>{ btn.disabled=true; await deferredPrompt.prompt(); deferredPrompt=null; btn.hidden=true; };
+  });
+
+  /* ====== Notifications (локальные будильники — best-effort) ====== */
+  async function scheduleNotification(dt, title){
+    try{
+      if(!('Notification' in window)) return;
+      if(Notification.permission!=='granted'){
+        await Notification.requestPermission();
+      }
+      if(Notification.permission==='granted'){
+        const diff=dt - new Date();
+        if(diff>0 && diff<36e5*24){ // < 24ч
+          setTimeout(()=> new Notification(title, { body: 'Время намаза', badge:'icon-192.png', icon:'icon-192.png'}), diff);
+        }
+      }
+    }catch(e){}
+  }
+
+  /* ====== Orientation/Compass for Qibla ====== */
+  async function enableOrientation(){
+    try{
+      if(typeof DeviceOrientationEvent !== 'undefined' && typeof DeviceOrientationEvent.requestPermission === 'function'){
+        const res = await DeviceOrientationEvent.requestPermission();
+        if(res!=='granted') return;
+      }
+      window.addEventListener('deviceorientation', (ev)=>{
+        const heading = ev.webkitCompassHeading ?? (360 - ev.alpha); // iOS vs others
+        if(heading!=null){ $('#needle').style.transform=`translate(-50%,-80%) rotate(${heading}deg)`; }
+      });
+    }catch(e){}
+  }
+  document.getElementById('view-qibla').addEventListener('click', enableOrientation, {once:true});
+
+  /* ====== MAIN: обновление расчётов ====== */
+  function pickCity(){
+    if(state.geo && navigator.geolocation){
+      return new Promise(res=>{
+        navigator.geolocation.getCurrentPosition(p=>{
+          res({name:'Моё местоположение', lat:p.coords.latitude, lon:p.coords.longitude, tz: new Date().getTimezoneOffset()/-60});
+        }, _=>{
+          const c=CITIES.find(x=>x.id===state.city); res(c);
+        }, {enableHighAccuracy:true, maximumAge:60_000, timeout:5_000});
+      });
+    }else{
+      return Promise.resolve(CITIES.find(x=>x.id===state.city));
+    }
+  }
+
+  function listTimes(t){
+    const map=[['Фаджр','Fajr'],['Восход','Sunrise'],['Зухр','Dhuhr'],['Аср','Asr'],['Магриб','Maghrib'],['Иша','Isha']];
+    const box=document.createElement('div');
+    map.forEach(([label,key],i)=>{
+      const dt=t[key];
+      const node=el(`<div class="row">
+        <div>
+          <div class="next">${label}</div>
+          <div class="pray">${fmt(dt, state.h24)}</div>
+        </div>
+        <button class="tiny" aria-label="Напомнить">🔔</button>
+      </div>`);
+      node.querySelector('button').onclick=()=> scheduleNotification(dt, `${label} • ${fmt(dt,state.h24)}`);
+      box.appendChild(node);
+    });
+    return box;
+  }
+
+  function updateNext(t){
+    const order=['Fajr','Sunrise','Dhuhr','Asr','Maghrib','Isha'];
+    const names={Fajr:'Фаджр',Sunrise:'Восход',Dhuhr:'Зухр',Asr:'Аср',Maghrib:'Магриб',Isha:'Иша'};
+    const now = new Date();
+    let nextKey='Fajr', nextTime = null;
+    for(const k of order){
+      if(t[k]>now){ nextKey=k; nextTime=t[k]; break; }
+    }
+    if(!nextTime){ // завтра Фаджр
+      const tomorrow=new Date(now); tomorrow.setDate(now.getDate()+1);
+      const cSel=CITIES.find(x=>x.id===state.city);
+      const t2 = computeTimes(tomorrow, current.lat, current.lon, current.tz, state.method, state.asr) || t;
+      nextKey='Fajr'; nextTime=t2['Fajr'];
+    }
+    $('#nextName').textContent = names[nextKey];
+    const diff = Math.max(0, nextTime - new Date());
+    const h = Math.floor(diff/3.6e6), m = Math.floor((diff%3.6e6)/6e4);
+    $('#nextEta').textContent = `${h? h+'ч ':''}${pad(m)}м`;
+  }
+
+  let current={lat:0,lon:0,tz:3};
+  async function updateAll(){
+    const c = await pickCity(); current=c;
+    $('#cityLabel').textContent = c.name;
+    $('#dateLabel').textContent = new Date().toLocaleDateString('ru-RU', {weekday:'long', day:'2-digit', month:'long'});
+    const t = computeTimes(new Date(), c.lat, c.lon, c.tz, state.method, state.asr);
+    const $times=$('#times'); $times.innerHTML='';
+    if(!t){ $times.appendChild(el(`<div class="row danger">Невозможно рассчитать на этой широте/дате</div>`)); return; }
+    $times.appendChild(listTimes(t));
+    updateNext(t);
+    // Qibla
+    const bearing = qiblaBearing(c.lat, c.lon);
+    $('#qiblaAngle').textContent = `${bearing.toFixed(1)}°`;
+    $('#qneedle').style.transform = `translate(-50%,-80%) rotate(${bearing}deg)`;
+  }
+
+  // Первичная и периодическое
+  updateAll();
+  if($('#auto').checked){ setInterval(updateAll, 60_000); }
+  $('#auto').onchange=()=>{ /* просто включено/выключено автообновление */ };
+
+  // Service Worker
+  if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js'); }
+  </script>
+</body>
+</html>
