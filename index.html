@@ -3,404 +3,53 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS Glass Effect</title>
+  <title>Стеклянный эффект</title>
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
     body {
       margin: 0;
-      height: 100vh;
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      background: linear-gradient(135deg, #667eea, #764ba2);
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
-      overflow: hidden;
+      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    .scene {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    /* Glass Effect Container - оптимизированный для производительности */
-    .glass-container {
-      position: relative;
-      isolation: isolate;
-      transform-style: preserve-3d;
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Основной эффект стекла */
-    .glass {
-      position: relative;
+    .glass-effect {
       width: 300px;
       height: 200px;
-      border-radius: 24px;
-      
-      /* Базовый стеклянный фон */
-      background: rgba(255, 255, 255, 0.15);
-      
-      /* Ключевой эффект стекла - имитация SwiftUI */
-      backdrop-filter: blur(50px) saturate(180%) contrast(1.2);
-      -webkit-backdrop-filter: blur(50px) saturate(180%) contrast(1.2);
-      
-      border: 1px solid rgba(255, 255, 255, 0.2);
-      box-shadow: 
-        0 25px 50px rgba(0, 0, 0, 0.15),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.05);
-      
       display: flex;
       justify-content: center;
       align-items: center;
-      color: rgba(255, 255, 255, 0.95);
-      font-size: 20px;
+      color: white;
+      font-size: 24px;
       font-weight: 600;
       text-align: center;
-      overflow: hidden;
-      cursor: pointer;
-      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      transform: translateZ(0);
-      will-change: transform, backdrop-filter;
-    }
-
-    /* Эффект жидкого стекла - динамическое преломление */
-    .glass::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: radial-gradient(
-        600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.3),
-        transparent 60%
-      );
-      opacity: var(--glass-opacity, 0);
-      transition: opacity 0.3s ease;
-      pointer-events: none;
-      z-index: 1;
-    }
-
-    /* Градиентный оверлей для объема */
-    .glass::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.1) 0%,
-        rgba(255, 255, 255, 0.05) 50%,
-        rgba(255, 255, 255, 0.1) 100%
-      );
-      pointer-events: none;
-      z-index: 2;
-    }
-
-    /* Hover эффекты */
-    .glass:hover {
-      --glass-opacity: 1;
-      transform: translateZ(20px) scale(1.02);
-      backdrop-filter: blur(60px) saturate(200%) contrast(1.3);
-      -webkit-backdrop-filter: blur(60px) saturate(200%) contrast(1.3);
-      box-shadow: 
-        0 35px 60px rgba(0, 0, 0, 0.2),
-        inset 0 1px 0 rgba(255, 255, 255, 0.15),
-        inset 0 -1px 0 rgba(0, 0, 0, 0.08);
-    }
-
-    /* Active state - нажатие */
-    .glass:active {
-      transform: translateZ(15px) scale(0.98);
-      backdrop-filter: blur(45px) saturate(170%) contrast(1.1);
-      -webkit-backdrop-filter: blur(45px) saturate(170%) contrast(1.1);
-      transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-
-    /* Expanded state - трансформация */
-    .glass.expanded {
-      width: 400px;
-      height: 300px;
-      backdrop-filter: blur(70px) saturate(220%) contrast(1.4);
-      -webkit-backdrop-filter: blur(70px) saturate(220%) contrast(1.4);
-    }
-
-    /* Слои глубины для объемного эффекта */
-    .depth-layer {
-      position: absolute;
-      border-radius: 24px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(30px);
-      -webkit-backdrop-filter: blur(30px);
-      transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: -1;
-    }
-
-    .depth-layer:nth-child(1) {
-      width: 320px;
-      height: 220px;
-      transform: translateZ(-15px);
-      opacity: 0.7;
-    }
-
-    .depth-layer:nth-child(2) {
-      width: 340px;
-      height: 240px;
-      transform: translateZ(-30px);
-      opacity: 0.5;
-    }
-
-    /* Анимированные частицы света */
-    .light-particle {
-      position: absolute;
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(255, 255, 255, 0.12), transparent 70%);
-      filter: blur(25px);
-      animation: floatParticle 8s ease-in-out infinite;
-      pointer-events: none;
-      z-index: -2;
-    }
-
-    .light-particle:nth-child(1) {
-      top: 15%;
-      left: 15%;
-      animation-delay: 0s;
-    }
-
-    .light-particle:nth-child(2) {
-      top: 65%;
-      right: 20%;
-      animation-delay: -3s;
-    }
-
-    .light-particle:nth-child(3) {
-      bottom: 25%;
-      left: 25%;
-      animation-delay: -6s;
-    }
-
-    @keyframes floatParticle {
-      0%, 100% { 
-        transform: translateY(0px) scale(1) rotate(0deg);
-        opacity: 0.7;
-      }
-      50% { 
-        transform: translateY(-30px) scale(1.2) rotate(180deg);
-        opacity: 1;
-      }
-    }
-
-    /* Контент с текстовыми эффектами */
-    .content {
-      position: relative;
-      z-index: 3;
-      text-shadow: 
-        0 2px 8px rgba(0, 0, 0, 0.3),
-        0 1px 0 rgba(255, 255, 255, 0.1);
-      transition: all 0.3s ease;
-      padding: 20px;
-    }
-
-    .glass:hover .content {
-      transform: translateY(-3px);
-      text-shadow: 
-        0 4px 12px rgba(0, 0, 0, 0.4),
-        0 2px 0 rgba(255, 255, 255, 0.15);
-    }
-
-    /* Анимированный градиентный текст */
-    .gradient-text {
-      background: linear-gradient(135deg, #ffffff, #e6e6e6, #ffffff);
-      background-size: 200% 200%;
-      -webkit-background-clip: text;
-      background-clip: text;
-      -webkit-text-fill-color: transparent;
-      animation: gradientShift 3s ease-in-out infinite;
-    }
-
-    @keyframes gradientShift {
-      0%, 100% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-    }
-
-    /* Микро-взаимодействия */
-    .micro-interaction {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: inherit;
-      background: radial-gradient(
-        circle at var(--click-x, 50%) var(--click-y, 50%),
-        rgba(255, 255, 255, 0.25),
-        transparent 70%
-      );
-      opacity: 0;
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    /* Адаптация для мобильных устройств */
-    @media (max-width: 768px) {
-      .glass {
-        width: 280px;
-        height: 180px;
-        backdrop-filter: blur(40px) saturate(160%) contrast(1.1);
-        -webkit-backdrop-filter: blur(40px) saturate(160%) contrast(1.1);
-      }
       
-      .glass.expanded {
-        width: 350px;
-        height: 250px;
-      }
+      /* Стеклянный эффект */
+      background: rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 15px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      
+      /* Плавные переходы */
+      transition: all 0.3s ease;
+    }
+
+    /* Эффект при наведении */
+    .glass-effect:hover {
+      transform: translateY(-5px);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
     }
   </style>
 </head>
 <body>
-  <div class="scene">
-    <div class="light-particle"></div>
-    <div class="light-particle"></div>
-    <div class="light-particle"></div>
-    
-    <div class="glass-container">
-      <div class="depth-layer"></div>
-      <div class="depth-layer"></div>
-      
-      <div class="glass" id="interactiveGlass">
-        <div class="micro-interaction" id="microInteraction"></div>
-        <div class="content">
-          <span class="gradient-text">iOS Glass Effect</span><br>
-          <span style="font-size: 14px; opacity: 0.9;">Нажми для трансформации</span>
-        </div>
-      </div>
-    </div>
+  <div class="glass-effect">
+    Стеклянный эффект ✨
   </div>
-
-  <script>
-    const glass = document.getElementById('interactiveGlass');
-    const container = document.querySelector('.glass-container');
-    const microInteraction = document.getElementById('microInteraction');
-    const depthLayers = document.querySelectorAll('.depth-layer');
-
-    // Эффект matchedGeometry - плавная анимация
-    let isExpanded = false;
-
-    // Track mouse position for glass refraction
-    glass.addEventListener('mousemove', (e) => {
-      const rect = glass.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      
-      glass.style.setProperty('--mouse-x', `${x}%`);
-      glass.style.setProperty('--mouse-y', `${y}%`);
-      
-      // Параллакс эффект для слоев глубины
-      const rotateX = (e.clientY / window.innerHeight - 0.5) * 8;
-      const rotateY = (e.clientX / window.innerWidth - 0.5) * 8;
-      
-      container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-      
-      depthLayers.forEach((layer, index) => {
-        const depth = (index + 1) * 0.3;
-        layer.style.transform = `translateZ(-${15 + index * 15}px) translateY(${rotateX * depth}px) translateX(${rotateY * depth}px)`;
-      });
-    });
-
-    // Reset transform on mouse leave
-    glass.addEventListener('mouseleave', () => {
-      container.style.transform = 'rotateX(0deg) rotateY(0deg)';
-      glass.style.setProperty('--mouse-x', '50%');
-      glass.style.setProperty('--mouse-y', '50%');
-      
-      depthLayers.forEach((layer, index) => {
-        layer.style.transform = `translateZ(-${15 + index * 15}px)`;
-      });
-    });
-
-    // Click animation with micro-interaction
-    glass.addEventListener('click', (e) => {
-      // Micro-interaction effect
-      const rect = glass.getBoundingClientRect();
-      const x = ((e.clientX - rect.left) / rect.width) * 100;
-      const y = ((e.clientY - rect.top) / rect.height) * 100;
-      
-      microInteraction.style.setProperty('--click-x', `${x}%`);
-      microInteraction.style.setProperty('--click-y', `${y}%`);
-      
-      // Анимация клика
-      microInteraction.style.opacity = '1';
-      microInteraction.style.transition = 'none';
-      microInteraction.offsetHeight; // Trigger reflow
-      
-      setTimeout(() => {
-        microInteraction.style.transition = 'opacity 0.6s ease';
-        microInteraction.style.opacity = '0';
-      }, 300);
-
-      // Toggle expanded state
-      isExpanded = !isExpanded;
-      
-      if (isExpanded) {
-        glass.classList.add('expanded');
-        glass.querySelector('.content').innerHTML = `
-          <span class="gradient-text">Расширенный режим</span><br>
-          <span style="font-size: 14px; opacity: 0.9;">Нажми чтобы свернуть</span>
-        `;
-      } else {
-        glass.classList.remove('expanded');
-        glass.querySelector('.content').innerHTML = `
-          <span class="gradient-text">iOS Glass Effect</span><br>
-          <span style="font-size: 14px; opacity: 0.9;">Нажми для трансформации</span>
-        `;
-      }
-    });
-
-    // Автоматическая адаптация цвета
-    function adaptToEnvironment() {
-      const now = new Date();
-      const hour = now.getHours();
-      const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      
-      if (isDarkMode || hour >= 18 || hour < 6) {
-        // Темный режим
-        document.body.style.background = 'linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%)';
-        glass.style.color = 'rgba(255, 255, 255, 0.95)';
-      } else {
-        // Светлый режим
-        document.body.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
-        glass.style.color = 'rgba(255, 255, 255, 0.95)';
-      }
-    }
-
-    // Инициализация и периодическое обновление
-    adaptToEnvironment();
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', adaptToEnvironment);
-    setInterval(adaptToEnvironment, 60000); // Обновление каждую минуту
-
-    // Оптимизация производительности
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          // Adjust glass properties based on scroll
-          const scrollY = window.scrollY;
-          const opacity = Math.max(0.7, 1 - scrollY / 500);
-          glass.style.opacity = opacity;
-          ticking = false;
-        });
-        ticking = true;
-      }
-    });
-  </script>
 </body>
 </html>
