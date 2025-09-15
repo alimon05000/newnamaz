@@ -3,60 +3,302 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>iOS 26 Glassmorphism</title>
+  <title>iOS 26 Advanced Glassmorphism</title>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       margin: 0;
       height: 100vh;
-      background: url('https://picsum.photos/800/1600') no-repeat center/cover;
+      background: linear-gradient(45deg, #2c3e50, #4ca1af, #c4e0e5);
+      background-size: 400% 400%;
+      animation: gradientBG 15s ease infinite;
       display: flex;
       justify-content: center;
       align-items: center;
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro", sans-serif;
+      perspective: 1000px;
+      overflow: hidden;
+    }
+
+    @keyframes gradientBG {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
+
+    .scene {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .glass-container {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.5s cubic-bezier(0.23, 1, 0.32, 1);
     }
 
     .glass {
-  width: 300px;
-  height: 200px;
-  border-radius: 24px;
+      width: 300px;
+      height: 200px;
+      border-radius: 24px;
+      
+      /* Advanced glass effect with refraction */
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.15),
+        rgba(255, 255, 255, 0.05)
+      );
+      
+      backdrop-filter: blur(40px) saturate(200%) brightness(130%);
+      -webkit-backdrop-filter: blur(40px) saturate(200%) brightness(130%);
+      
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.1),
+        0 0 0 1px rgba(255, 255, 255, 0.1),
+        inset 0 0 20px rgba(255, 255, 255, 0.05);
+      
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgba(255, 255, 255, 0.9);
+      font-size: 18px;
+      font-weight: 600;
+      text-align: center;
+      overflow: hidden;
+      cursor: pointer;
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      transform: translateZ(0);
+    }
 
-  background: rgba(255, 255, 255, 0.08); /* чуть прозрачный */
-  backdrop-filter: blur(30px) saturate(180%);
-  -webkit-backdrop-filter: blur(30px) saturate(180%);
+    /* Refraction effect with dynamic content */
+    .glass::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: radial-gradient(
+        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.05)
+      );
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
 
-  border: 1px solid rgba(255, 255, 255, 0.25);
+    /* Color adaptation layer */
+    .glass::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      background: linear-gradient(
+        45deg,
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.05),
+        rgba(255, 255, 255, 0.1)
+      );
+      mix-blend-mode: overlay;
+      pointer-events: none;
+    }
 
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    /* Hover effects */
+    .glass:hover {
+      transform: translateZ(20px) scale(1.02);
+      box-shadow: 
+        0 30px 60px rgba(0, 0, 0, 0.2),
+        0 0 0 1px rgba(255, 255, 255, 0.15),
+        inset 0 0 30px rgba(255, 255, 255, 0.1);
+    }
 
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  font-size: 18px;
-  font-weight: 500;
-  text-align: center;
-  overflow: hidden;
-}
+    .glass:hover::before {
+      opacity: 1;
+    }
 
-/* градиентный оверлей сверху */
-.glass::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    145deg,
-    rgba(255, 255, 255, 0.15),
-    rgba(255, 255, 255, 0.02)
-  );
-  pointer-events: none;
-}
+    /* Active state transformation */
+    .glass:active {
+      transform: translateZ(10px) scale(0.98);
+      transition: transform 0.2s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    /* Expanded state */
+    .glass.expanded {
+      width: 400px;
+      height: 300px;
+      backdrop-filter: blur(50px) saturate(220%) brightness(140%);
+      -webkit-backdrop-filter: blur(50px) saturate(220%) brightness(140%);
+    }
+
+    /* Depth effect for visionOS inspiration */
+    .depth-layer {
+      position: absolute;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    }
+
+    .depth-layer:nth-child(1) {
+      width: 320px;
+      height: 220px;
+      transform: translateZ(-20px);
+      opacity: 0.6;
+    }
+
+    .depth-layer:nth-child(2) {
+      width: 340px;
+      height: 240px;
+      transform: translateZ(-40px);
+      opacity: 0.4;
+    }
+
+    .glass-container:hover .depth-layer:nth-child(1) {
+      transform: translateZ(-30px) translateY(5px);
+    }
+
+    .glass-container:hover .depth-layer:nth-child(2) {
+      transform: translateZ(-50px) translateY(10px);
+    }
+
+    /* Ambient light particles */
+    .ambient-light {
+      position: absolute;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 255, 255, 0.1), transparent 70%);
+      filter: blur(20px);
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    .ambient-light:nth-child(1) {
+      top: 20%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .ambient-light:nth-child(2) {
+      top: 60%;
+      right: 25%;
+      animation-delay: -2s;
+    }
+
+    .ambient-light:nth-child(3) {
+      bottom: 30%;
+      left: 30%;
+      animation-delay: -4s;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) scale(1); }
+      50% { transform: translateY(-20px) scale(1.1); }
+    }
+
+    /* Content styling */
+    .content {
+      position: relative;
+      z-index: 2;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .glass:hover .content {
+      transform: translateY(-2px);
+    }
   </style>
 </head>
 <body>
-  <div class="glass">
-    Эффект iOS 26 ✨
+  <div class="scene">
+    <div class="ambient-light"></div>
+    <div class="ambient-light"></div>
+    <div class="ambient-light"></div>
+    
+    <div class="glass-container">
+      <div class="depth-layer"></div>
+      <div class="depth-layer"></div>
+      <div class="glass" id="interactiveGlass">
+        <div class="content">
+          Эффект iOS 26 ✨<br>
+          <span style="font-size: 14px; opacity: 0.8;">Нажми для трансформации</span>
+        </div>
+      </div>
+    </div>
   </div>
+
+  <script>
+    const glass = document.getElementById('interactiveGlass');
+    const container = document.querySelector('.glass-container');
+    const depthLayers = document.querySelectorAll('.depth-layer');
+
+    // Mouse move effects for refraction
+    glass.addEventListener('mousemove', (e) => {
+      const rect = glass.getBoundingClientRect();
+      const x = ((e.clientX - rect.left) / rect.width) * 100;
+      const y = ((e.clientY - rect.top) / rect.height) * 100;
+      
+      glass.style.setProperty('--mouse-x', `${x}%`);
+      glass.style.setProperty('--mouse-y', `${y}%`);
+      
+      // Parallax effect for depth layers
+      const rotateX = (e.clientY / window.innerHeight - 0.5) * 10;
+      const rotateY = (e.clientX / window.innerWidth - 0.5) * 10;
+      
+      container.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    // Reset transform on mouse leave
+    glass.addEventListener('mouseleave', () => {
+      container.style.transform = 'rotateX(0deg) rotateY(0deg)';
+      glass.style.setProperty('--mouse-x', '50%');
+      glass.style.setProperty('--mouse-y', '50%');
+    });
+
+    // Click to expand/collapse (iOS-like transformation)
+    let isExpanded = false;
+    glass.addEventListener('click', () => {
+      isExpanded = !isExpanded;
+      
+      if (isExpanded) {
+        glass.classList.add('expanded');
+        glass.querySelector('.content').innerHTML = 
+          'Расширенный режим 🪄<br><span style="font-size: 14px; opacity: 0.8;">Нажми чтобы свернуть</span>';
+      } else {
+        glass.classList.remove('expanded');
+        glass.querySelector('.content').innerHTML = 
+          'Эффект iOS 26 ✨<br><span style="font-size: 14px; opacity: 0.8;">Нажми для трансформации</span>';
+      }
+    });
+
+    // Color adaptation based on background
+    function updateGlassColor() {
+      const now = new Date();
+      const hour = now.getHours();
+      
+      if (hour >= 6 && hour < 18) {
+        // Day mode - lighter
+        document.body.style.background = 'linear-gradient(45deg, #667eea, #764ba2, #f093fb)';
+      } else {
+        // Night mode - darker
+        document.body.style.background = 'linear-gradient(45deg, #2c3e50, #4ca1af, #0f2027)';
+      }
+    }
+
+    // Initial color setup and periodic updates
+    updateGlassColor();
+    setInterval(updateGlassColor, 3600000); // Update every hour
+  </script>
 </body>
 </html>
