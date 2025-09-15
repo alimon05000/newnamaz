@@ -736,4 +736,546 @@
             align-items: center;
             gap: 12px;
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter:
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+        
+        .theme-glass .offline-notification {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255, 255, 255, 0.9);
+        }
+        
+        /* Кнопка обновления */
+        .refresh-button {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: var(--primary);
+            color: white;
+            width: 55px;
+            height: 55px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 8px 25px var(--card-shadow);
+            z-index: 100;
+            border: none;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        
+        .theme-glass .refresh-button {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 8px 25px rgba(123, 104, 238, 0.5);
+        }
+
+        /* Микро-пузырьки для мыльного эффекта */
+        .micro-bubbles {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: var(--border-radius);
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .micro-bubbles::before,
+        .micro-bubbles::after {
+            content: "";
+            position: absolute;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            animation: bubbleRise 15s ease-in-out infinite;
+        }
+
+        .micro-bubbles::before {
+            width: 10px;
+            height: 10px;
+            top: 20%;
+            left: 15%;
+            animation-delay: 0s;
+        }
+
+        .micro-bubbles::after {
+            width: 6px;
+            height: 6px;
+            top: 60%;
+            right: 20%;
+            animation-delay: -7s;
+        }
+
+        @keyframes bubbleRise {
+            0% { transform: translateY(100px) scale(0); opacity: 0; }
+            10% { opacity: 0.8; }
+            90% { opacity: 0.4; }
+            100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+    <div class="parallax-bg"></div>
+    <div class="app-container">
+        <header>
+            <h1>Расписание</h1>
+            <div class="week-indicator" id="weekIndicator">Неделя 1</div>
+            <div class="theme-selector">
+                <button class="theme-button" id="themeButton">🎨</button>
+                <div class="theme-options" id="themeOptions">
+                    <div class="theme-option" data-theme="default">Стандартная</div>
+                    <div class="theme-option" data-theme="glass">Мыльное стекло</div>
+                    <div class="theme-option" data-theme="dark">Тёмная</div>
+                    <div class="theme-option" data-theme="nature">Природа</div>
+                </div>
+            </div>
+        </header>
+
+        <div class="day-navigation">
+            <button class="day-button active" data-day="0">Пн</button>
+            <button class="day-button" data-day="1">Вт</button>
+            <button class="day-button" data-day="2">Ср</button>
+            <button class="day-button" data-day="3">Чт</button>
+            <button class="day-button" data-day="4">Пт</button>
+            <button class="day-button" data-day="5">Сб</button>
+            <button class="day-button" data-day="6">Вс</button>
+        </div>
+
+        <div class="bubble-container">
+            <div class="micro-bubbles"></div>
+            <div class="bubble-content">
+                <div class="bubble-film"></div>
+                <div class="bubble-refraction"></div>
+                <div class="bubble-highlights"></div>
+                <div class="bubble-border"></div>
+                
+                <h2 class="day-title">Понедельник</h2>
+                <div id="scheduleContent">
+                    <!-- Расписание будет загружено здесь -->
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            Обновляется автоматически • <span id="lastUpdated"></span>
+        </footer>
+    </div>
+    
+    <div class="offline-notification" id="offlineNotification">
+        <span>⚠️</span> Работает в оффлайн-режиме
+    </div>
+    
+    <button class="refresh-button" id="refreshButton" title="Обновить расписание">↻</button>
+
+    <script>
+        // Определение текущей недели (чётная/нечётная)
+        function getCurrentWeek() {
+            // Фиксированная дата начала семестра для примера (можно изменить)
+            const startDate = new Date('2024-02-05');
+            const today = new Date();
+            const diffTime = Math.abs(today - startDate);
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+            const weekNumber = Math.floor(diffDays / 7) % 2;
+            
+            // 0 - первая неделя, 1 - вторая неделя
+            return weekNumber;
+        }
+
+        // Определение номера пары по времени
+        function getPairNumber(time) {
+            const timeSlots = [
+                "8:30-10:05",  // 1 пара
+                "10:15-11:50", // 2 пара
+                "12:20-13:55", // 3 пара
+                "14:05-15:40", // 4 пара
+                "15:50-17:25", // 5 пара
+                "17:35-19:10"  // 6 пара
+            ];
+            
+            return timeSlots.indexOf(time) + 1;
+        }
+
+        // Данные расписания
+        const scheduleData = {
+            0: { // Понедельник
+                name: "Понедельник",
+                lessons: [
+                    {
+                        time: "8:30-10:05",
+                        name: "Релейная защита и противоаварийная автоматика",
+                        room: "1-8",
+                        teacher: "Ниналалов С.А.",
+                        week: null,
+                        type: "лекция"
+                    },
+                    {
+                        time: "10:15-11:50",
+                        name: "Геотермальная энергетика",
+                        room: "1-8",
+                        teacher: "Алхасова Д.А.",
+                        week: null,
+                        type: "практика"
+                    },
+                    {
+                        time: "12:20-13:55",
+                        name: "Теоретические основы использования ВЭ",
+                        room: "1-2лк",
+                        teacher: "Алхасова Д.А.",
+                        week: null,
+                        type: "практика"
+                    }
+                ]
+            },
+            1: { // Вторник
+                name: "Вторник",
+                lessons: [
+                    {
+                        time: "8:30-10:05",
+                        name: "Физкультура",
+                        room: "Спортзал",
+                        teacher: "",
+                        week: 1,
+                        type: "практика"
+                    },
+                    {
+                        time: "10:15-11:50",
+                        name: "Энергетические сооружения установок нетрадиционной и ВЭ",
+                        room: "1-2лк",
+                        teacher: "Баба Д.",
+                        week: null,
+                        type: "лекция"
+                    },
+                    {
+                        time: "12:20-13:55",
+                        name: "Теоретические основы использования ВЭ",
+                        room: "1-2лк",
+                        teacher: "Алхасова Д.А.",
+                        week: 0,
+                        type: "лекция"
+                    }
+                ]
+            },
+            2: { // Среда
+                name: "Среда",
+                lessons: [
+                    {
+                        time: "8:30-10:05",
+                        name: "Энергетические сооружения установок нетрадиционной и ВЭ",
+                        room: "2-41",
+                        teacher: "Баба Д.",
+                        week: 1,
+                        type: "практика"
+                    },
+                    {
+                        time: "10:15-11:50",
+                        name: "Релейная защита и противоаварийная автоматика",
+                        room: "1-2лк",
+                        teacher: "Ниналалов С.А.",
+                        week: null,
+                        type: "практика"
+                    },
+                    {
+                        time: "12:20-13:55",
+                        name: "Энергетические сооружения установок нетрадиционной и ВЭ",
+                        room: "1-8",
+                        teacher: "Баба Д.",
+                        week: null,
+                        type: "семинар"
+                    }
+                ]
+            },
+            3: { // Четверг
+                name: "Четверг",
+                lessons: [
+                    {
+                        time: "10:15-11:50",
+                        name: "Техника высоких напряжений",
+                        room: "2-30",
+                        teacher: "Шахсинов Г.Ш.",
+                        week: null,
+                        type: "лекция"
+                    },
+                    {
+                        time: "12:20-13:55",
+                        name: "Метрология",
+                        room: "2-30",
+                        teacher: "Офицерова Н.В.",
+                        week: null,
+                        type: "практика"
+                    },
+                    {
+                        time: "14:05-15:40",
+                        name: "Метрология",
+                        room: "2-30",
+                        teacher: "Офицерова Н.В.",
+                        week: 0,
+                        type: "практика"
+                    }
+                ]
+            },
+            4: { // Пятница
+                name: "Пятница",
+                lessons: [
+                    {
+                        time: "10:15-11:50",
+                        name: "Эксплуатация электротех. оборудования ГЭС, ГАЭС",
+                        room: "2-30",
+                        teacher: "Шахсинов Г.Ш.",
+                        week: null,
+                        type: "лекция"
+                    },
+                    {
+                        time: "12:20-13:55",
+                        name: "Энергетическое оборудование возобновляемой энергетики",
+                        room: "2-30",
+                        teacher: "Баламирзоев А.Г.",
+                        week: null,
+                        type: "практика"
+                    },
+                    {
+                        time: "14:05-15:40",
+                        name: "Английский язык",
+                        room: "1-19",
+                        teacher: "Алибекова Д.М.",
+                        week: null,
+                        type: "практика"
+                    }
+                ]
+            },
+            5: { // Суббота
+                name: "Суббота",
+                lessons: []
+            },
+            6: { // Воскресенье
+                name: "Воскресенье",
+                lessons: []
+            }
+        };
+
+        // Текущая неделя (0 - первая, 1 - вторая)
+        let currentWeek = getCurrentWeek();
+        // Текущий выбранный день (0-6)
+        let currentDay = new Date().getDay() - 1;
+        if (currentDay < 0) currentDay = 0;
+
+        // Инициализация приложения
+        document.addEventListener('DOMContentLoaded', function() {
+            // Установка индикатора недели
+            document.getElementById('weekIndicator').textContent = `Неделя ${currentWeek + 1}`;
+            
+            // Установка времени последнего обновления
+            updateLastUpdatedTime();
+            
+            // Активация текущего дня в навигации
+            const dayButtons = document.querySelectorAll('.day-button');
+            dayButtons.forEach((button, index) => {
+                if (index === currentDay) {
+                    button.classList.add('active');
+                } else {
+                    button.classList.remove('active');
+                }
+                
+                button.addEventListener('click', () => {
+                    dayButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentDay = parseInt(button.getAttribute('data-day'));
+                    renderSchedule();
+                });
+            });
+            
+            // Настройка переключения тем
+            const themeButton = document.getElementById('themeButton');
+            const themeOptions = document.getElementById('themeOptions');
+            
+            themeButton.addEventListener('click', () => {
+                themeOptions.style.display = themeOptions.style.display === 'flex' ? 'none' : 'flex';
+            });
+            
+            document.querySelectorAll('.theme-option').forEach(option => {
+                option.addEventListener('click', () => {
+                    const theme = option.getAttribute('data-theme');
+                    changeTheme(theme);
+                    themeOptions.style.display = 'none';
+                });
+            });
+            
+            // Кнопка обновления
+            document.getElementById('refreshButton').addEventListener('click', () => {
+                const refreshIcon = document.getElementById('refreshButton');
+                refreshIcon.style.transition = 'transform 0.5s ease';
+                refreshIcon.style.transform = 'rotate(360deg)';
+                
+                setTimeout(() => {
+                    refreshIcon.style.transform = 'rotate(0deg)';
+                    updateLastUpdatedTime();
+                }, 500);
+            });
+            
+            // Закрытие меню тем при клике вне его
+            document.addEventListener('click', (e) => {
+                if (!themeButton.contains(e.target) && !themeOptions.contains(e.target)) {
+                    themeOptions.style.display = 'none';
+                }
+            });
+            
+            // Динамическое преломление для мыльного эффекта
+            const bubbleContainer = document.querySelector('.bubble-container');
+            const refraction = document.querySelector('.bubble-refraction');
+            
+            bubbleContainer.addEventListener('mousemove', (e) => {
+                const rect = bubbleContainer.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width) * 100;
+                const y = ((e.clientY - rect.top) / rect.height) * 100;
+                
+                bubbleContainer.style.setProperty('--mouse-x', `${x}%`);
+                bubbleContainer.style.setProperty('--mouse-y', `${y}%`);
+            });
+            
+            bubbleContainer.addEventListener('mouseenter', () => {
+                bubbleContainer.style.setProperty('--refraction-opacity', '0.9');
+            });
+            
+            bubbleContainer.addEventListener('mouseleave', () => {
+                bubbleContainer.style.setProperty('--refraction-opacity', '0');
+            });
+            
+            // Первоначальная отрисовка расписания
+            renderSchedule();
+            
+            // Проверка состояния сети
+            window.addEventListener('online', updateOnlineStatus);
+            window.addEventListener('offline', updateOnlineStatus);
+            updateOnlineStatus();
+            
+            // Сохранение данных в localStorage
+            saveToLocalStorage();
+        });
+
+        // Функция отрисовки расписания для выбранного дня
+        function renderSchedule() {
+            const scheduleContent = document.getElementById('scheduleContent');
+            const dayTitle = document.querySelector('.day-title');
+            
+            const dayData = scheduleData[currentDay];
+            dayTitle.textContent = dayData.name;
+            
+            // Фильтрация занятий по текущей неделе
+            const filteredLessons = dayData.lessons.filter(lesson => 
+                lesson.week === null || lesson.week === currentWeek
+            );
+            
+            if (filteredLessons.length === 0) {
+                scheduleContent.innerHTML = '<div class="empty-schedule">Занятий нет</div>';
+                return;
+            }
+            
+            let html = '';
+            filteredLessons.forEach((lesson) => {
+                const pairNumber = getPairNumber(lesson.time);
+                const typeClass = lesson.type === "лекция" ? "lecture" : 
+                                lesson.type === "практика" ? "practice" : "seminar";
+                
+                html += `
+                    <div class="lesson">
+                        <div class="lesson-number">${pairNumber}</div>
+                        <div class="lesson-time">${lesson.time}</div>
+                        <div class="lesson-type ${typeClass}">${lesson.type}</div>
+                        <div class="lesson-name">${lesson.name}</div>
+                        <div class="lesson-details">
+                            <div class="lesson-detail">📍 ${lesson.room}</div>
+                            <div class="lesson-detail">👨‍🏫 ${lesson.teacher}</div>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            scheduleContent.innerHTML = html;
+        }
+
+        // Функция смены темы
+        function changeTheme(themeName) {
+            document.body.classList.remove('theme-glass', 'theme-dark', 'theme-nature');
+            
+            if (themeName !== 'default') {
+                document.body.classList.add(`theme-${themeName}`);
+            }
+            
+            localStorage.setItem('selectedTheme', themeName);
+        }
+
+        // Загрузка сохранённой темы
+        const savedTheme = localStorage.getItem('selectedTheme');
+        if (savedTheme) {
+            changeTheme(savedTheme);
+        }
+        
+        // Функция обновления статуса онлайн/оффлайн
+        function updateOnlineStatus() {
+            const notification = document.getElementById('offlineNotification');
+            if (!navigator.onLine) {
+                notification.style.display = 'flex';
+                loadFromLocalStorage();
+            } else {
+                notification.style.display = 'none';
+            }
+        }
+        
+        // Сохранение данных в localStorage
+        function saveToLocalStorage() {
+            const appData = {
+                scheduleData: scheduleData,
+                currentWeek: currentWeek,
+                currentDay: currentDay,
+                lastUpdated: new Date().toISOString()
+            };
+            
+            localStorage.setItem('scheduleAppData', JSON.stringify(appData));
+        }
+        
+        // Загрузка данных из localStorage
+        function loadFromLocalStorage() {
+            const savedData = localStorage.getItem('scheduleAppData');
+            if (savedData) {
+                try {
+                    const appData = JSON.parse(savedData);
+                    
+                    currentWeek = appData.currentWeek || currentWeek;
+                    currentDay = appData.currentDay || currentDay;
+                    
+                    document.getElementById('weekIndicator').textContent = `Неделя ${currentWeek + 1}`;
+                    
+                    if (appData.lastUpdated) {
+                        const lastUpdated = new Date(appData.lastUpdated);
+                        document.getElementById('lastUpdated').textContent = `Обновлено: ${lastUpdated.toLocaleDateString()} ${lastUpdated.toLocaleTimeString()}`;
+                    }
+                    
+                    renderSchedule();
+                } catch (e) {
+                    console.error('Ошибка загрузки из localStorage:', e);
+                }
+            }
+        }
+        
+        // Обновление времени последнего обновления
+        function updateLastUpdatedTime() {
+            const now = new Date();
+            document.getElementById('lastUpdated').textContent = `Обновлено: ${now.toLocaleDateString()} ${now.toLocaleTimeString()}`;
+            
+            const savedData = localStorage.getItem('scheduleAppData');
+            if (savedData) {
+                try {
+                    const appData = JSON.parse(savedData);
+                    appData.lastUpdated = now.toISOString();
+                    localStorage.setItem('scheduleAppData', JSON.stringify(appData));
+                } catch (e) {
+                    console.error('Ошибка сохранения времени обновления:', e);
+                }
+            }
+        }
+    </script>
+</body>
+</html>
