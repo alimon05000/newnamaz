@@ -1,380 +1,739 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Мыльный пузырь</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      padding: 20px;
-      overflow: hidden;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#000">
+    <title>Расписание группы</title>
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzAwNzZmNiIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiNmZmYiPlI8L3RleHQ+PC9zdmc+">
+    <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCg0LDRgdGB0LvRjNCy0LDRjtCJINCy0L7RgdGC0LDQstC70Y/QvdC+0LUg0L/RgNC+0YTQtdGB0YHQuNC+0L3QsNC70YzQvdC+0LkiLAogICJzaG9ydF9uYW1lIjogItCg0LDRgdGB0LvRjNCy0LDRjiIsCiAgInN0YXJ0X3VybCIgOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJeE1EQWxJaUJvWldsbmFIUTlJakV3TUNVaUlHWnBiR3c5SW1Kc1lTd2dZMjl1ZEdWdWRDQTlJbU52YlM5cGJYQnNZV2x1Wnk5cGJYQnNZV2x1WnlJZ1ptbHlkRDBpWVhCd2JHbGpZWFJwYjI0aUlIaHRiRzVjOVhWelpTazdJQzgrUEhCaGRHZ2daRDBpVFRBd01EQWxNakF3TkNBeE1EQXdYekF3TURBd0lERXdNREF3SURFeE1EQWxNREF3TURBaUlITjBlV3hsUFNKbWFXeHNJajQ4YzNSNWJHVStMbU52YlM5cGJYQnNZV2x1Wnk5cGJYQnNZV2x1WnlJZ1ptbHlkRDBpWVhCd2JHbGpZWFJwYjI0aUlIaHRiRzVjOVhWelpTazdJQzgrUEhCaGRHZ2daRDBpVFRBd01EQWxNakF3TkNBeE1EQXdYekF3TURBd0lERXdNREF3SURFeE1EQWxNREF3TURBaUlITjBlV3hsUFNKbWFXeHNJajQ4YzNSNWJHVStMbU52YlM5cGJYQnNZV2x1Wnk5cGJYQnNZV2x1WnlJZ1ptbHlkRDBpWVhCd2JHbGpZWFJwYjI0aUlIaHRiRzVjOVhWelpTazdJQzgrUEhCaGRHZ2daRDBpVFRBd01EQWxNakF3TkNBeE1EQXdYekF3TURBd0lERXdNREF3SURFeE1EQWxNREF3TURBaUlITjBlV3hsUFNKbWFXeHNJajQ4YzNSNWJHVStMbU52YlM5cGJYQnNZV2x1Wnk5cGJYQnNZV2x1WnlJZ1ptbHlkRDBpWVhCd2JHbGpZWFJwYjI0aUlIaHRiRzVjOVhWelpTazdJQzgrUEhCaGRHZ2daRDBpVFRBd01EQWxNakF3TkNBeE1EQXdYekF3TURBd0lERXdNREF3SURFeE1EQWxNREF3TURBaUlITjBlV3hsUFNKbWFXeHNJajQ4YzNSNWJHVStQZz09IiwKICAgICAgInNpemVzIjogIjE0NHgxNDQiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
+    <style>
+        :root {
+            --primary: #0076f6;
+            --secondary: #6c757d;
+            --success: #28a745;
+            --danger: #dc3545;
+            --warning: #ffc107;
+            --info: #17a2b8;
+            --light: #f8f9fa;
+            --dark: #343a40;
+            --background: #ffffff;
+            --text: #212529;
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --border-radius: 16px;
+            --transition: all 0.3s ease;
+            
+            /* Цвета для темы мыльного стекла */
+            --accent: #0A84FF;
+            --green: #30D158;
+            --yellow: #FFD60A;
+            --red: #FF453A;
+            --text-primary: rgba(0,0,0,.9);
+            --text-secondary: rgba(0,0,0,.6);
+        }
 
-    .container {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 50px;
-      max-width: 900px;
-      width: 100%;
-    }
+        .theme-glass {
+            --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-shadow: rgba(0, 0, 0, 0.1);
+            --text: rgba(255, 255, 255, 0.95);
+            --primary: #7b68ee;
+            --secondary: rgba(255, 255, 255, 0.8);
+            --border-radius: 25px;
+            --text-primary: rgba(255, 255, 255, 0.95);
+            --text-secondary: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(25px) brightness(120%);
+            -webkit-backdrop-filter: blur(25px) brightness(120%);
+            background-color: rgba(255, 255, 255, 0.03);
+        }
 
-    /* Основа мыльного пузыря */
-    .bubble-container {
-      position: relative;
-      border-radius: 25px;
-      overflow: hidden;
-      transform-style: preserve-3d;
-      perspective: 1000px;
-    }
+        .theme-dark {
+            --background: #1a1a1a;
+            --card-bg: rgba(0, 0, 0, 0.2);
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --text: rgba(255,255,255,.92);
+            --text-primary: rgba(255,255,255,.92);
+            --text-secondary: rgba(255,255,255,.6);
+        }
 
-    /* Основное тело пузыря */
-    .bubble-body {
-      position: relative;
-      background: rgba(255, 255, 255, 0.03);
-      backdrop-filter: blur(25px) brightness(120%);
-      -webkit-backdrop-filter: blur(25px) brightness(120%);
-      border-radius: 25px;
-      padding: 30px;
-      z-index: 2;
-      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-      overflow: hidden;
-    }
+        .theme-nature {
+            --background: linear-gradient(135deg, #4CAF50 0%, #2E7D32 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-shadow: rgba(0, 0, 0, 0.2);
+            --text: #1B5E20;
+            --primary: #388E3C;
+        }
 
-    /* Иридисцентная пленка пузыря */
-    .bubble-film {
-      position: absolute;
-      inset: 0;
-      border-radius: 25px;
-      background: linear-gradient(
-        45deg,
-        rgba(255, 0, 150, 0.1) 0%,
-        rgba(0, 204, 255, 0.1) 25%,
-        rgba(0, 255, 100, 0.1) 50%,
-        rgba(255, 200, 0, 0.1) 75%,
-        rgba(255, 0, 150, 0.1) 100%
-      );
-      z-index: 3;
-      pointer-events: none;
-      mix-blend-mode: overlay;
-      animation: rainbowShift 8s linear infinite;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            transition: var(--transition);
+        }
 
-    /* Преломление света */
-    .bubble-refraction {
-      position: absolute;
-      inset: 0;
-      border-radius: 25px;
-      background: radial-gradient(
-        circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.4) 0%,
-        rgba(255, 255, 255, 0.1) 40%,
-        transparent 70%
-      );
-      z-index: 4;
-      pointer-events: none;
-      mix-blend-mode: screen;
-      opacity: var(--refraction-opacity, 0);
-      transition: opacity 0.4s ease;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+            padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+            overflow-x: hidden;
+        }
 
-    /* Динамические блики */
-    .bubble-highlights {
-      position: absolute;
-      inset: 0;
-      border-radius: 25px;
-      background: 
-        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 30%),
-        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
-        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 35%);
-      z-index: 5;
-      pointer-events: none;
-      mix-blend-mode: soft-light;
-      opacity: 0.7;
-    }
+        /* Фон с параллакс эффектом для мыльного стекла */
+        .parallax-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.6) 0%, transparent 40%),
+                radial-gradient(circle at 80% 60%, rgba(200, 220, 255, 0.5) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(255, 200, 220, 0.4) 0%, transparent 45%),
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background-attachment: fixed;
+            pointer-events: none;
+        }
 
-    /* Тонкая обводка радуги */
-    .bubble-border {
-      position: absolute;
-      inset: 0;
-      border-radius: 25px;
-      border: 2px solid transparent;
-      background: linear-gradient(45deg, #ff0080, #00ccff, #00ff66, #ffcc00) border-box;
-      -webkit-mask: 
-        linear-gradient(#fff 0 0) padding-box, 
-        linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      z-index: 6;
-      pointer-events: none;
-      opacity: 0.6;
-    }
+        .theme-glass .parallax-bg {
+            background: 
+                radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.8) 0%, transparent 50%),
+                radial-gradient(circle at 80% 60%, rgba(180, 200, 240, 0.6) 0%, transparent 55%),
+                radial-gradient(circle at 40% 70%, rgba(240, 180, 200, 0.5) 0%, transparent 48%),
+                linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
 
-    /* Эффект при наведении */
-    .bubble-container:hover .bubble-body {
-      transform: translateZ(20px) scale(1.05);
-      backdrop-filter: blur(35px) brightness(140%);
-      -webkit-backdrop-filter: blur(35px) brightness(140%);
-    }
+        .theme-dark .parallax-bg {
+            background: radial-gradient(circle at 30% 40%, rgba(100, 100, 255, 0.2) 0%, rgba(80, 80, 200, 0.1) 40%, rgba(0, 0, 0, 0) 70%),
+                        radial-gradient(circle at 70% 60%, rgba(150, 100, 255, 0.2) 0%, rgba(120, 80, 200, 0.1) 30%, rgba(0, 0, 0, 0) 60%),
+                        #1a1a1a;
+        }
 
-    .bubble-container:hover .bubble-refraction {
-      --refraction-opacity: 0.9;
-    }
+        .app-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
 
-    .bubble-container:hover .bubble-film {
-      animation-duration: 4s;
-    }
+        /* Стили для мыльного стекла */
+        .bubble-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            transform-style: preserve-3d;
+            margin-bottom: 25px;
+        }
 
-    /* Анимации */
-    @keyframes rainbowShift {
-      0% { background-position: 0% 0%; }
-      100% { background-position: 200% 200%; }
-    }
+        .bubble-content {
+            position: relative;
+            background: var(--card-bg);
+            backdrop-filter: blur(30px) brightness(130%) saturate(180%);
+            -webkit-backdrop-filter: blur(30px) brightness(130%) saturate(180%);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            z-index: 2;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+        }
 
-    @keyframes bubbleFloat {
-      0%, 100% { transform: translateY(0) rotate(0deg); }
-      33% { transform: translateY(-5px) rotate(1deg); }
-      66% { transform: translateY(5px) rotate(-1deg); }
-    }
+        /* Иридисцентная пленка мыльного пузыря */
+        .bubble-film {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--border-radius);
+            background: linear-gradient(
+                45deg,
+                rgba(255, 0, 150, 0.15) 0%,
+                rgba(0, 204, 255, 0.15) 25%,
+                rgba(0, 255, 100, 0.15) 50%,
+                rgba(255, 200, 0, 0.15) 75%,
+                rgba(255, 0, 150, 0.15) 100%
+            );
+            z-index: 3;
+            pointer-events: none;
+            mix-blend-mode: overlay;
+            animation: rainbowShift 8s linear infinite;
+        }
 
-    .bubble-container {
-      animation: bubbleFloat 8s ease-in-out infinite;
-    }
+        /* Преломление света */
+        .bubble-refraction {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--border-radius);
+            background: radial-gradient(
+                circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
+                rgba(255, 255, 255, 0.5) 0%,
+                rgba(255, 255, 255, 0.2) 40%,
+                transparent 70%
+            );
+            z-index: 4;
+            pointer-events: none;
+            mix-blend-mode: screen;
+            opacity: var(--refraction-opacity, 0);
+            transition: opacity 0.4s ease;
+        }
 
-    .bubble-container:nth-child(2) {
-      animation-delay: -2s;
-    }
+        /* Глянцевые блики */
+        .bubble-highlights {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--border-radius);
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.7) 0%, transparent 30%),
+                radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.5) 0%, transparent 40%);
+            z-index: 5;
+            pointer-events: none;
+            mix-blend-mode: soft-light;
+            opacity: 0.6;
+        }
 
-    /* Стили контента */
-    .card-header {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      margin-bottom: 25px;
-    }
+        /* Радужная обводка */
+        .bubble-border {
+            position: absolute;
+            inset: 0;
+            border-radius: var(--border-radius);
+            border: 2px solid transparent;
+            background: linear-gradient(45deg, #ff0080, #00ccff, #00ff66, #ffcc00) border-box;
+            -webkit-mask: 
+                linear-gradient(#fff 0 0) padding-box, 
+                linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            z-index: 6;
+            pointer-events: none;
+            opacity: 0.7;
+        }
 
-    .icon {
-      width: 55px;
-      height: 55px;
-      background: linear-gradient(45deg, rgba(255, 107, 107, 0.8), rgba(78, 205, 196, 0.8));
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-weight: bold;
-      font-size: 1.6rem;
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
+        /* Эффект при наведении для мыльного стекла */
+        .bubble-container:hover .bubble-content {
+            transform: translateZ(15px) scale(1.02);
+            backdrop-filter: blur(40px) brightness(150%) saturate(200%);
+            -webkit-backdrop-filter: blur(40px) brightness(150%) saturate(200%);
+        }
 
-    .card-title {
-      color: white;
-      margin: 0;
-      font-size: 1.4rem;
-      font-weight: 600;
-      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-    }
+        .bubble-container:hover .bubble-refraction {
+            --refraction-opacity: 0.9;
+        }
 
-    .card-subtitle {
-      color: rgba(255, 255, 255, 0.9);
-      margin: 5px 0 0 0;
-      font-size: 1rem;
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    }
+        .bubble-container:hover .bubble-film {
+            animation-duration: 4s;
+        }
 
-    .music-widget {
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      padding: 18px;
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      border-radius: 18px;
-      backdrop-filter: blur(15px);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-    }
+        /* Анимации */
+        @keyframes rainbowShift {
+            0% { background-position: 0% 0%; }
+            100% { background-position: 200% 200%; }
+        }
 
-    .album-cover {
-      width: 55px;
-      height: 55px;
-      background: linear-gradient(45deg, rgba(116, 185, 255, 0.8), rgba(162, 155, 254, 0.8));
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: white;
-      font-size: 1.6rem;
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.2);
-    }
+        @keyframes bubbleFloat {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            33% { transform: translateY(-3px) rotate(0.5deg); }
+            66% { transform: translateY(3px) rotate(-0.5deg); }
+        }
 
-    .play-btn {
-      width: 45px;
-      height: 45px;
-      background: rgba(255, 255, 255, 0.2);
-      border: none;
-      border-radius: 50%;
-      color: white;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255, 255, 255, 0.25);
-    }
+        .theme-glass .bubble-container {
+            animation: bubbleFloat 10s ease-in-out infinite;
+        }
 
-    .play-btn:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: scale(1.2) rotate(12deg);
-    }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding: 15px 0;
+            position: relative;
+        }
 
-    .card-content div {
-      color: white;
-      margin-bottom: 15px;
-      padding: 12px;
-      border-radius: 12px;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
-    }
+        h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, var(--primary), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-    /* Микро-пузырьки */
-    .micro-bubbles {
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      border-radius: 25px;
-      pointer-events: none;
-      z-index: 1;
-    }
+        .theme-glass h1 {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #74b9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        }
 
-    .micro-bubbles::before {
-      content: "";
-      position: absolute;
-      width: 8px;
-      height: 8px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 50%;
-      top: 20%;
-      left: 15%;
-      animation: bubbleRise 12s ease-in-out infinite;
-    }
+        .week-indicator {
+            background: var(--card-bg);
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: 600;
+            box-shadow: 0 10px 30px rgba(0,0,0,.15), 0 1px 0 rgba(255,255,255,.1) inset;
+            border: 1px solid rgba(255,255,255,0.2);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+        }
 
-    .micro-bubbles::after {
-      content: "";
-      position: absolute;
-      width: 5px;
-      height: 5px;
-      background: rgba(255, 255, 255, 0.2);
-      border-radius: 50%;
-      top: 60%;
-      right: 20%;
-      animation: bubbleRise 15s ease-in-out infinite;
-    }
+        .theme-glass .week-indicator {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255, 255, 255, 0.95);
+        }
 
-    @keyframes bubbleRise {
-      0% { transform: translateY(100px) scale(0); opacity: 0; }
-      10% { opacity: 0.7; }
-      90% { opacity: 0.5; }
-      100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
-    }
+        .theme-dark .week-indicator {
+            background: rgba(0,0,0,.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,.2), 0 1px 0 rgba(255,255,255,.1) inset, inset 0 1px 0 rgba(255,255,255,.2);
+        }
 
-    @media (max-width: 550px) {
-      .container {
-        grid-template-columns: 1fr;
-        gap: 30px;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- Музыкальный пузырь -->
-    <div class="bubble-container" id="bubble1">
-      <div class="micro-bubbles"></div>
-      <div class="bubble-body">
-        <div class="bubble-film"></div>
-        <div class="bubble-refraction"></div>
-        <div class="bubble-highlights"></div>
-        <div class="bubble-border"></div>
+        .theme-selector {
+            position: relative;
+        }
+
+        .theme-button {
+            background: var(--card-bg);
+            border: none;
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 6px 20px var(--card-shadow);
+            color: var(--text);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .theme-glass .theme-button {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .theme-dark .theme-button {
+            background: rgba(0,0,0,.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,.2), 0 1px 0 rgba(255,255,255,.1) inset, inset 0 1px 0 rgba(255,255,255,.2);
+        }
+
+        .theme-options {
+            position: absolute;
+            top: 55px;
+            right: 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 15px;
+            box-shadow: 0 15px 35px var(--card-shadow);
+            display: none;
+            flex-direction: column;
+            gap: 12px;
+            z-index: 100;
+            width: 160px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .theme-glass .theme-options {
+            background: rgba(255, 255, 255, 0.2);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+
+        .theme-dark .theme-options {
+            background: rgba(0,0,0,.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.1) inset, inset 0 1px 0 rgba(255,255,255,.2);
+        }
+
+        .theme-option {
+            padding: 12px;
+            border-radius: 15px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .theme-glass .theme-option {
+            color: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-option:hover {
+            background: rgba(0,0,0,0.1);
+            transform: translateY(-2px);
+        }
+
+        .theme-glass .theme-option:hover {
+            background: rgba(255,255,255,0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+
+        .day-navigation {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            overflow-x: auto;
+            padding: 8px 0;
+            scrollbar-width: none;
+            gap: 8px;
+        }
+
+        .day-navigation::-webkit-scrollbar {
+            display: none;
+        }
+
+        .day-button {
+            padding: 15px 20px;
+            border-radius: var(--border-radius);
+            background: var(--card-bg);
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--text);
+            white-space: nowrap;
+            box-shadow: 0 6px 20px var(--card-shadow);
+            flex: 1;
+            min-width: 85px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .theme-glass .day-button {
+            background: rgba(255, 255, 255, 0.15);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.25);
+            color: rgba(255, 255, 255, 0.95);
+        }
+
+        .theme-dark .day-button {
+            background: rgba(0,0,0,.25);
+            box-shadow: 0 10px 30px rgba(0,0,0,.2), 0 1px 0 rgba(255,255,255,.1) inset, inset 0 1px 0 rgba(255,255,255,.2);
+        }
+
+        .day-button.active {
+            background: var(--primary);
+            color: white;
+            box-shadow: 0 8px 25px rgba(10,132,255,0.5);
+            transform: translateY(-2px);
+        }
+
+        .theme-glass .day-button.active {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 8px 25px rgba(123, 104, 238, 0.5);
+        }
+
+        .schedule-container {
+            background: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 25px;
+            box-shadow: 0 15px 35px var(--card-shadow);
+            margin-bottom: 35px;
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .theme-glass .schedule-container {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255,255,255,0.25);
+            padding: 25px;
+        }
+
+        .theme-dark .schedule-container {
+            background: rgba(0,0,0,.25);
+            box-shadow: 0 15px 35px rgba(0,0,0,.25), 0 1px 0 rgba(255,255,255,.1) inset, inset 0 1px 0 rgba(255,255,255,.2);
+        }
+
+        .day-title {
+            font-size: 1.6rem;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 700;
+            padding-bottom: 15px;
+            border-bottom: 3px solid var(--primary);
+            background: linear-gradient(45deg, var(--primary), var(--info));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .theme-glass .day-title {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4, #74b9ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            border-bottom: 3px solid transparent;
+            border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4, #74b9ff) 1;
+        }
+
+        .lesson {
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 20px;
+            background: rgba(0,0,0,0.05);
+            border-left: 5px solid var(--primary);
+            position: relative;
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .theme-glass .lesson {
+            background: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-left: 5px solid transparent;
+            border-image: linear-gradient(45deg, #ff6b6b, #4ecdc4) 1;
+        }
+
+        .theme-dark .lesson {
+            background: rgba(0,0,0,.2);
+            box-shadow: 0 8px 25px rgba(0,0,0,.25), inset 0 1px 0 rgba(255,255,255,.15);
+        }
+
+        .lesson-number {
+            position: absolute;
+            top: -12px;
+            left: -12px;
+            background: var(--primary);
+            color: white;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 15px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            z-index: 10;
+        }
+
+        .theme-glass .lesson-number {
+            background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        .lesson-time {
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 8px;
+            font-size: 1rem;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .theme-glass .lesson-time {
+            color: #74b9ff;
+            background: linear-gradient(45deg, #74b9ff, #a29bfe);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .lesson-name {
+            font-weight: 700;
+            margin-bottom: 12px;
+            font-size: 1.2rem;
+            line-height: 1.4;
+        }
+
+        .theme-glass .lesson-name {
+            color: rgba(255, 255, 255, 0.95);
+            text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+        }
+
+        .lesson-type {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .lecture {
+            background-color: rgba(10, 132, 255, 0.2);
+            color: var(--accent);
+            border: 1px solid rgba(10, 132, 255, 0.3);
+        }
+
+        .theme-glass .lecture {
+            background-color: rgba(116, 185, 255, 0.25);
+            color: #74b9ff;
+            border: 1px solid rgba(116, 185, 255, 0.4);
+        }
+
+        .practice {
+            background-color: rgba(48, 209, 88, 0.2);
+            color: var(--green);
+            border: 1px solid rgba(48, 209, 88, 0.3);
+        }
+
+        .theme-glass .practice {
+            background-color: rgba(78, 205, 196, 0.25);
+            color: #4ecdc4;
+            border: 1px solid rgba(78, 205, 196, 0.4);
+        }
+
+        .seminar {
+            background-color: rgba(255, 193, 7, 0.2);
+            color: var(--warning);
+            border: 1px solid rgba(255, 193, 7, 0.3);
+        }
+
+        .theme-glass .seminar {
+            background-color: rgba(255, 107, 107, 0.25);
+            color: #ff6b6b;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+        }
+
+        .lesson-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            font-size: 0.95rem;
+            color: var(--secondary);
+        }
+
+        .theme-glass .lesson-details {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .lesson-detail {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 12px;
+            background: rgba(0,0,0,0.05);
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .theme-glass .lesson-detail {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        .empty-schedule {
+            text-align: center;
+            padding: 40px;
+            color: var(--secondary);
+            font-style: italic;
+            font-size: 1.1rem;
+        }
+
+        .theme-glass .empty-schedule {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: var(--secondary);
+            font-size: 0.95rem;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-radius: var(--border-radius);
+            background: rgba(255,255,255,0.05);
+            margin-top: 20px;
+        }
+
+        .theme-glass footer {
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        @media (max-width: 480px) {
+            .app-container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+            }
+            
+            .day-button {
+                padding: 12px 15px;
+                font-size: 0.9rem;
+                min-width: 70px;
+            }
+            
+            .lesson {
+                padding: 16px;
+            }
+            
+            .lesson-name {
+                font-size: 1.1rem;
+            }
+
+            .schedule-container {
+                padding: 20px;
+            }
+
+            .theme-glass .schedule-container {
+                padding: 20px;
+            }
+        }
+
+        /* Анимации */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .schedule-container {
+            animation: fadeIn 0.6s ease;
+        }
+
+        .lesson {
+            animation: fadeIn 0.6s ease;
+            animation-fill-mode: both;
+        }
+
+        .lesson:nth-child(1) { animation-delay: 0.1s; }
+        .lesson:nth-child(2) { animation-delay: 0.2s; }
+        .lesson:nth-child(3) { animation-delay: 0.3s; }
+        .lesson:nth-child(4) { animation-delay: 0.4s; }
+        .lesson:nth-child(5) { animation-delay: 0.5s; }
         
-        <div class="card-header">
-          <div class="icon">🎵</div>
-          <div>
-            <h3 class="card-title">Today's Hits</h3>
-            <p class="card-subtitle">Apple Music Hits</p>
-          </div>
-        </div>
-        <div class="music-widget">
-          <div class="album-cover">♪</div>
-          <div style="flex: 1">
-            <div style="color: white; font-weight: 500">Current Song</div>
-            <div style="color: rgba(255, 255, 255, 0.9); font-size: 14px">Artist Name</div>
-          </div>
-          <button class="play-btn">▶</button>
-        </div>
-      </div>
-    </div>
-
-    <!-- Пузырь напоминаний -->
-    <div class="bubble-container" id="bubble2">
-      <div class="micro-bubbles"></div>
-      <div class="bubble-body">
-        <div class="bubble-film"></div>
-        <div class="bubble-refraction"></div>
-        <div class="bubble-highlights"></div>
-        <div class="bubble-border"></div>
-        
-        <div class="card-header">
-          <div class="icon">📝</div>
-          <div>
-            <h3 class="card-title">Reminders</h3>
-            <p class="card-subtitle">3 items</p>
-          </div>
-        </div>
-        <div class="card-content">
-          <div>○ Pick up contacts</div>
-          <div>○ Order plant food</div>
-          <div>○ Call mom for birthday</div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // Динамическое преломление при движении мыши
-    const bubbles = document.querySelectorAll('.bubble-container');
-    
-    bubbles.forEach(bubble => {
-      const refraction = bubble.querySelector('.bubble-refraction');
-      
-      bubble.addEventListener('mousemove', (e) => {
-        const rect = bubble.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) * 100;
-        const y = ((e.clientY - rect.top) / rect.height) * 100;
-        
-        bubble.style.setProperty('--mouse-x', `${x}%`);
-        bubble.style.setProperty('--mouse-y', `${y}%`);
-      });
-      
-      bubble.addEventListener('mouseenter', () => {
-        bubble.style.setProperty('--refraction-opacity', '0.9');
-      });
-      
-      bubble.addEventListener('mouseleave', () => {
-        bubble.style.setProperty('--refraction-opacity', '0');
-      });
-    });
-  </script>
-</body>
-</html>
+        /* Оффлайн уведомление */
+        .offline-notification {
+            position: fixed;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--card-bg);
+            padding: 15px 25px;
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 25px var(--card-shadow);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            gap: 12px;
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter:
