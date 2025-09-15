@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Стеклянные карточки</title>
+  <title>Многослойное стекло</title>
   <style>
     body {
       margin: 0;
@@ -19,27 +19,97 @@
     .container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 20px;
+      gap: 30px;
       max-width: 800px;
       width: 100%;
     }
 
-    .glass {
-      background: rgba(255, 255, 255, 0.2);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      border-radius: 15px;
-      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      padding: 20px;
-      transition: all 0.3s ease;
+    /* Основной контейнер стекла */
+    .glass-container {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
     }
 
-    .glass:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 12px 40px 0 rgba(31, 38, 135, 0.5);
+    /* Слои для эффекта глубины */
+    .glass-layer {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      pointer-events: none;
     }
 
+    .layer-1 {
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      z-index: 1;
+    }
+
+    .layer-2 {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(30px);
+      -webkit-backdrop-filter: blur(30px);
+      transform: scale(0.98);
+      z-index: 2;
+    }
+
+    /* Основное содержимое с высокой прозрачностью */
+    .glass-content {
+      position: relative;
+      background: rgba(255, 255, 255, 0.08); /* 80% прозрачности */
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border-radius: 20px;
+      padding: 25px;
+      z-index: 3;
+      transition: all 0.4s ease;
+    }
+
+    /* Блики на гранях */
+    .glass-glow {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.3) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(255, 255, 255, 0.2) 100%
+      );
+      z-index: 4;
+      pointer-events: none;
+      mix-blend-mode: overlay;
+    }
+
+    /* Тонкая обводка для акцента граней */
+    .glass-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* Эффект при наведении */
+    .glass-container:hover .glass-content {
+      transform: translateY(-2px);
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .glass-container:hover .glass-glow {
+      background: linear-gradient(
+        135deg,
+        rgba(255, 255, 255, 0.4) 0%,
+        transparent 30%,
+        transparent 70%,
+        rgba(255, 255, 255, 0.3) 100%
+      );
+    }
+
+    /* Стили контента */
     .card-header {
       display: flex;
       align-items: center;
@@ -48,10 +118,10 @@
     }
 
     .icon {
-      width: 3.125rem;
-      height: 3.125rem;
+      width: 50px;
+      height: 50px;
       background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-      border-radius: 0.5rem;
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -63,12 +133,13 @@
     .card-title {
       color: white;
       margin: 0;
-      font-size: 1.25rem;
+      font-size: 1.3rem;
       font-weight: 600;
+      text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
     }
 
     .card-subtitle {
-      color: rgba(255, 255, 255, 0.7);
+      color: rgba(255, 255, 255, 0.8);
       margin: 5px 0 0 0;
       font-size: 0.9rem;
     }
@@ -79,6 +150,9 @@
       gap: 15px;
       padding: 15px;
       margin-top: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
     }
 
     .album-cover {
@@ -94,9 +168,9 @@
     }
 
     .play-btn {
-      width: 2.5rem;
-      height: 2.5rem;
-      background: rgba(255, 255, 255, 0.3);
+      width: 40px;
+      height: 40px;
+      background: rgba(255, 255, 255, 0.25);
       border: none;
       border-radius: 50%;
       color: white;
@@ -105,19 +179,21 @@
       align-items: center;
       justify-content: center;
       transition: all 0.3s ease;
+      backdrop-filter: blur(5px);
     }
 
     .play-btn:hover {
-      background: rgba(255, 255, 255, 0.5);
+      background: rgba(255, 255, 255, 0.4);
       transform: scale(1.1);
     }
 
     .card-content div {
       color: white;
-      margin-bottom: 10px;
-      padding: 8px;
-      border-radius: 8px;
-      background: rgba(255, 255, 255, 0.1);
+      margin-bottom: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(5px);
     }
 
     @media (max-width: 550px) {
@@ -130,37 +206,51 @@
 <body>
   <div class="container">
     <!-- Музыкальная карточка -->
-    <div class="glass">
-      <div class="card-header">
-        <div class="icon">🎵</div>
-        <div>
-          <h3 class="card-title">Today's Hits</h3>
-          <p class="card-subtitle">Apple Music Hits</p>
+    <div class="glass-container">
+      <div class="glass-layer layer-1"></div>
+      <div class="glass-layer layer-2"></div>
+      <div class="glass-content">
+        <div class="glass-glow"></div>
+        <div class="glass-border"></div>
+        
+        <div class="card-header">
+          <div class="icon">🎵</div>
+          <div>
+            <h3 class="card-title">Today's Hits</h3>
+            <p class="card-subtitle">Apple Music Hits</p>
+          </div>
         </div>
-      </div>
-      <div class="music-widget glass">
-        <div class="album-cover">♪</div>
-        <div style="flex: 1">
-          <div style="color: white; font-weight: 500">Current Song</div>
-          <div style="color: rgba(255, 255, 255, 0.7); font-size: 14px">Artist Name</div>
+        <div class="music-widget">
+          <div class="album-cover">♪</div>
+          <div style="flex: 1">
+            <div style="color: white; font-weight: 500">Current Song</div>
+            <div style="color: rgba(255, 255, 255, 0.8); font-size: 14px">Artist Name</div>
+          </div>
+          <button class="play-btn">▶</button>
         </div>
-        <button class="play-btn">▶</button>
       </div>
     </div>
 
     <!-- Карточка напоминаний -->
-    <div class="glass">
-      <div class="card-header">
-        <div class="icon">📝</div>
-        <div>
-          <h3 class="card-title">Reminders</h3>
-          <p class="card-subtitle">3 items</p>
+    <div class="glass-container">
+      <div class="glass-layer layer-1"></div>
+      <div class="glass-layer layer-2"></div>
+      <div class="glass-content">
+        <div class="glass-glow"></div>
+        <div class="glass-border"></div>
+        
+        <div class="card-header">
+          <div class="icon">📝</div>
+          <div>
+            <h3 class="card-title">Reminders</h3>
+            <p class="card-subtitle">3 items</p>
+          </div>
         </div>
-      </div>
-      <div class="card-content">
-        <div>○ Pick up contacts</div>
-        <div>○ Order plant food</div>
-        <div>○ Call mom for birthday</div>
+        <div class="card-content">
+          <div>○ Pick up contacts</div>
+          <div>○ Order plant food</div>
+          <div>○ Call mom for birthday</div>
+        </div>
       </div>
     </div>
   </div>
