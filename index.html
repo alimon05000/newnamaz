@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Яркий глянец</title>
+  <title>Мыльный пузырь</title>
   <style>
     body {
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #667eea, #764ba2);
+      background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
       display: flex;
       justify-content: center;
       align-items: center;
@@ -20,100 +20,135 @@
     .container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 40px;
-      max-width: 800px;
+      gap: 50px;
+      max-width: 900px;
       width: 100%;
     }
 
-    /* Основной контейнер для глянца */
-    .glossy-container {
+    /* Основа мыльного пузыря */
+    .bubble-container {
       position: relative;
-      border-radius: 20px;
+      border-radius: 25px;
       overflow: hidden;
       transform-style: preserve-3d;
+      perspective: 1000px;
     }
 
-    /* Основа глянца - почти прозрачная с сильным размытием */
-    .glossy-base {
+    /* Основное тело пузыря */
+    .bubble-body {
       position: relative;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(40px) brightness(150%) saturate(200%);
-      -webkit-backdrop-filter: blur(40px) brightness(150%) saturate(200%);
-      border-radius: 20px;
-      padding: 25px;
+      background: rgba(255, 255, 255, 0.03);
+      backdrop-filter: blur(25px) brightness(120%);
+      -webkit-backdrop-filter: blur(25px) brightness(120%);
+      border-radius: 25px;
+      padding: 30px;
       z-index: 2;
-      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+      overflow: hidden;
     }
 
-    /* Яркие глянцевые блики */
-    .glossy-highlight {
+    /* Иридисцентная пленка пузыря */
+    .bubble-film {
       position: absolute;
       inset: 0;
-      border-radius: 20px;
+      border-radius: 25px;
       background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.4) 0%,
-        rgba(255, 255, 255, 0.1) 40%,
-        rgba(255, 255, 255, 0.05) 60%,
-        rgba(255, 255, 255, 0.3) 100%
+        45deg,
+        rgba(255, 0, 150, 0.1) 0%,
+        rgba(0, 204, 255, 0.1) 25%,
+        rgba(0, 255, 100, 0.1) 50%,
+        rgba(255, 200, 0, 0.1) 75%,
+        rgba(255, 0, 150, 0.1) 100%
       );
       z-index: 3;
       pointer-events: none;
       mix-blend-mode: overlay;
-      filter: brightness(1.5);
+      animation: rainbowShift 8s linear infinite;
     }
 
-    /* Динамические отражения */
-    .glossy-reflection {
+    /* Преломление света */
+    .bubble-refraction {
       position: absolute;
-      top: -50%;
-      left: -50%;
-      width: 200%;
-      height: 200%;
+      inset: 0;
+      border-radius: 25px;
       background: radial-gradient(
         circle at var(--mouse-x, 50%) var(--mouse-y, 50%),
-        rgba(255, 255, 255, 0.6) 0%,
-        transparent 60%
+        rgba(255, 255, 255, 0.4) 0%,
+        rgba(255, 255, 255, 0.1) 40%,
+        transparent 70%
       );
       z-index: 4;
       pointer-events: none;
-      mix-blend-mode: soft-light;
-      opacity: var(--reflection-opacity, 0);
-      transition: opacity 0.3s ease;
+      mix-blend-mode: screen;
+      opacity: var(--refraction-opacity, 0);
+      transition: opacity 0.4s ease;
     }
 
-    /* Глянцевая обводка */
-    .glossy-border {
+    /* Динамические блики */
+    .bubble-highlights {
       position: absolute;
       inset: 0;
-      border-radius: 20px;
-      border: 1px solid rgba(255, 255, 255, 0.4);
+      border-radius: 25px;
+      background: 
+        radial-gradient(circle at 20% 20%, rgba(255, 255, 255, 0.6) 0%, transparent 30%),
+        radial-gradient(circle at 80% 80%, rgba(255, 255, 255, 0.4) 0%, transparent 40%),
+        radial-gradient(circle at 40% 70%, rgba(255, 255, 255, 0.3) 0%, transparent 35%);
       z-index: 5;
       pointer-events: none;
-      box-shadow: 
-        inset 0 1px 0 rgba(255, 255, 255, 0.3),
-        inset 0 -1px 0 rgba(255, 255, 255, 0.1);
+      mix-blend-mode: soft-light;
+      opacity: 0.7;
     }
 
-    /* Эффект при наведении - усиливаем глянец */
-    .glossy-container:hover .glossy-base {
-      backdrop-filter: blur(50px) brightness(180%) saturate(250%);
-      -webkit-backdrop-filter: blur(50px) brightness(180%) saturate(250%);
-      transform: translateZ(10px) scale(1.02);
+    /* Тонкая обводка радуги */
+    .bubble-border {
+      position: absolute;
+      inset: 0;
+      border-radius: 25px;
+      border: 2px solid transparent;
+      background: linear-gradient(45deg, #ff0080, #00ccff, #00ff66, #ffcc00) border-box;
+      -webkit-mask: 
+        linear-gradient(#fff 0 0) padding-box, 
+        linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      z-index: 6;
+      pointer-events: none;
+      opacity: 0.6;
     }
 
-    .glossy-container:hover .glossy-highlight {
-      background: linear-gradient(
-        135deg,
-        rgba(255, 255, 255, 0.6) 0%,
-        rgba(255, 255, 255, 0.2) 40%,
-        rgba(255, 255, 255, 0.1) 60%,
-        rgba(255, 255, 255, 0.4) 100%
-      );
+    /* Эффект при наведении */
+    .bubble-container:hover .bubble-body {
+      transform: translateZ(20px) scale(1.05);
+      backdrop-filter: blur(35px) brightness(140%);
+      -webkit-backdrop-filter: blur(35px) brightness(140%);
     }
 
-    .glossy-container:hover .glossy-reflection {
-      --reflection-opacity: 0.8;
+    .bubble-container:hover .bubble-refraction {
+      --refraction-opacity: 0.9;
+    }
+
+    .bubble-container:hover .bubble-film {
+      animation-duration: 4s;
+    }
+
+    /* Анимации */
+    @keyframes rainbowShift {
+      0% { background-position: 0% 0%; }
+      100% { background-position: 200% 200%; }
+    }
+
+    @keyframes bubbleFloat {
+      0%, 100% { transform: translateY(0) rotate(0deg); }
+      33% { transform: translateY(-5px) rotate(1deg); }
+      66% { transform: translateY(5px) rotate(-1deg); }
+    }
+
+    .bubble-container {
+      animation: bubbleFloat 8s ease-in-out infinite;
+    }
+
+    .bubble-container:nth-child(2) {
+      animation-delay: -2s;
     }
 
     /* Стили контента */
@@ -121,67 +156,70 @@
       display: flex;
       align-items: center;
       gap: 15px;
-      margin-bottom: 20px;
+      margin-bottom: 25px;
     }
 
     .icon {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(45deg, #ff6b6b, #4ecdc4);
-      border-radius: 12px;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(45deg, rgba(255, 107, 107, 0.8), rgba(78, 205, 196, 0.8));
+      border-radius: 14px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
       font-weight: bold;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      font-size: 1.6rem;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
     }
 
     .card-title {
       color: white;
       margin: 0;
-      font-size: 1.3rem;
+      font-size: 1.4rem;
       font-weight: 600;
-      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     }
 
     .card-subtitle {
       color: rgba(255, 255, 255, 0.9);
       margin: 5px 0 0 0;
-      font-size: 0.9rem;
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      font-size: 1rem;
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
     }
 
     .music-widget {
       display: flex;
       align-items: center;
       gap: 15px;
-      padding: 15px;
-      margin-top: 15px;
-      background: rgba(255, 255, 255, 0.08);
-      border-radius: 15px;
-      backdrop-filter: blur(20px) brightness(130%);
-      border: 1px solid rgba(255, 255, 255, 0.2);
+      padding: 18px;
+      margin-top: 20px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 18px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
     }
 
     .album-cover {
-      width: 50px;
-      height: 50px;
-      background: linear-gradient(45deg, #74b9ff, #a29bfe);
-      border-radius: 10px;
+      width: 55px;
+      height: 55px;
+      background: linear-gradient(45deg, rgba(116, 185, 255, 0.8), rgba(162, 155, 254, 0.8));
+      border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
       color: white;
-      font-size: 1.5rem;
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      font-size: 1.6rem;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
     }
 
     .play-btn {
-      width: 40px;
-      height: 40px;
-      background: rgba(255, 255, 255, 0.3);
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.2);
       border: none;
       border-radius: 50%;
       color: white;
@@ -189,54 +227,86 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.3s ease;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+      transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+      backdrop-filter: blur(8px);
+      border: 1px solid rgba(255, 255, 255, 0.25);
     }
 
     .play-btn:hover {
-      background: rgba(255, 255, 255, 0.5);
-      transform: scale(1.15);
+      background: rgba(255, 255, 255, 0.4);
+      transform: scale(1.2) rotate(12deg);
     }
 
     .card-content div {
       color: white;
-      margin-bottom: 12px;
-      padding: 10px;
-      border-radius: 10px;
-      background: rgba(255, 255, 255, 0.08);
-      backdrop-filter: blur(10px) brightness(130%);
-      border: 1px solid rgba(255, 255, 255, 0.15);
-      text-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+      margin-bottom: 15px;
+      padding: 12px;
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.4);
     }
 
-    /* Анимация мерцания для дополнительного блеска */
-    @keyframes shimmer {
-      0% { opacity: 0.7; }
-      50% { opacity: 1; }
-      100% { opacity: 0.7; }
+    /* Микро-пузырьки */
+    .micro-bubbles {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: 25px;
+      pointer-events: none;
+      z-index: 1;
     }
 
-    .glossy-highlight {
-      animation: shimmer 3s ease-in-out infinite;
+    .micro-bubbles::before {
+      content: "";
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      top: 20%;
+      left: 15%;
+      animation: bubbleRise 12s ease-in-out infinite;
+    }
+
+    .micro-bubbles::after {
+      content: "";
+      position: absolute;
+      width: 5px;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 50%;
+      top: 60%;
+      right: 20%;
+      animation: bubbleRise 15s ease-in-out infinite;
+    }
+
+    @keyframes bubbleRise {
+      0% { transform: translateY(100px) scale(0); opacity: 0; }
+      10% { opacity: 0.7; }
+      90% { opacity: 0.5; }
+      100% { transform: translateY(-100px) scale(1.2); opacity: 0; }
     }
 
     @media (max-width: 550px) {
       .container {
         grid-template-columns: 1fr;
-        gap: 20px;
+        gap: 30px;
       }
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <!-- Музыкальная карточка -->
-    <div class="glossy-container" id="glossy1">
-      <div class="glossy-base">
-        <div class="glossy-reflection"></div>
-        <div class="glossy-highlight"></div>
-        <div class="glossy-border"></div>
+    <!-- Музыкальный пузырь -->
+    <div class="bubble-container" id="bubble1">
+      <div class="micro-bubbles"></div>
+      <div class="bubble-body">
+        <div class="bubble-film"></div>
+        <div class="bubble-refraction"></div>
+        <div class="bubble-highlights"></div>
+        <div class="bubble-border"></div>
         
         <div class="card-header">
           <div class="icon">🎵</div>
@@ -256,12 +326,14 @@
       </div>
     </div>
 
-    <!-- Карточка напоминаний -->
-    <div class="glossy-container" id="glossy2">
-      <div class="glossy-base">
-        <div class="glossy-reflection"></div>
-        <div class="glossy-highlight"></div>
-        <div class="glossy-border"></div>
+    <!-- Пузырь напоминаний -->
+    <div class="bubble-container" id="bubble2">
+      <div class="micro-bubbles"></div>
+      <div class="bubble-body">
+        <div class="bubble-film"></div>
+        <div class="bubble-refraction"></div>
+        <div class="bubble-highlights"></div>
+        <div class="bubble-border"></div>
         
         <div class="card-header">
           <div class="icon">📝</div>
@@ -280,27 +352,27 @@
   </div>
 
   <script>
-    // Динамические отражения при движении мыши
-    const glossyContainers = document.querySelectorAll('.glossy-container');
+    // Динамическое преломление при движении мыши
+    const bubbles = document.querySelectorAll('.bubble-container');
     
-    glossyContainers.forEach(container => {
-      const reflection = container.querySelector('.glossy-reflection');
+    bubbles.forEach(bubble => {
+      const refraction = bubble.querySelector('.bubble-refraction');
       
-      container.addEventListener('mousemove', (e) => {
-        const rect = container.getBoundingClientRect();
+      bubble.addEventListener('mousemove', (e) => {
+        const rect = bubble.getBoundingClientRect();
         const x = ((e.clientX - rect.left) / rect.width) * 100;
         const y = ((e.clientY - rect.top) / rect.height) * 100;
         
-        container.style.setProperty('--mouse-x', `${x}%`);
-        container.style.setProperty('--mouse-y', `${y}%`);
+        bubble.style.setProperty('--mouse-x', `${x}%`);
+        bubble.style.setProperty('--mouse-y', `${y}%`);
       });
       
-      container.addEventListener('mouseenter', () => {
-        container.style.setProperty('--reflection-opacity', '0.8');
+      bubble.addEventListener('mouseenter', () => {
+        bubble.style.setProperty('--refraction-opacity', '0.9');
       });
       
-      container.addEventListener('mouseleave', () => {
-        container.style.setProperty('--reflection-opacity', '0');
+      bubble.addEventListener('mouseleave', () => {
+        bubble.style.setProperty('--refraction-opacity', '0');
       });
     });
   </script>
