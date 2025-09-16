@@ -7,7 +7,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#000000">
     <title>Расписание группы</title>
-    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaTD0iMTUwIiBmaWxsPSIjMDA3NmY2IiByeD0iMjAiLz48dGV4dCB4PSI1MCIgeT0iODAiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSI0MCIgZmlsbD0iI2ZmZiI+UjwvdGV4dD48L3N2Zz4=">
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTUwIiBoZWlnaHQ9IjE1MCIgZmlsbD0iIzAwNzZmNiIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjgwIiBmb250LWZhbWlseT0iQXJpYWwiIGZvbnQtc2l6ZT0iNDAiIGZpbGw9IiNmZmYiPlI8L3RleHQ+PC9zdmc+">
     <link rel="manifest" href="data:application/json;base64,ewogICJuYW1lIjogItCg0LDRgdGB0LvRjNCy0LDRjtCJINCy0L7RgdGC0LDQstC70Y/QvdC+0LUg0L/RgNC+0YTQtdGB0YHQuNC+0L3QsNC70YzQvdC+0LkiLAogICJzaG9ydF9uYW1lIjogItCg0LDRgdGB0LvRjNCy0LDRjiIsCiAgInN0YXJ0X3VybCIgOiAiLiIsCiAgImRpc3BsYXkiOiAic3RhbmRhbG9uZSIsCiAgImljb25zIjogWwogICAgewogICAgICAic3JjIjogImRhdGE6aW1hZ2Uvc3ZnK3htbDtiYXNlNjQsUEhOMlp5QjRiV3h1Y3owaWFIUjBjRG92TDNkM2R5NTNNeTV2Y21jdk1qQXdNQzl6ZG1jaUlIZHBaSFJvUFNJeE1EQWxJaUJvWldsbmFIUTlJakV3TUNVaUlHWnBiR3c5SW1Kc1lTd2dZMjl1ZEdWdWRDQTlJbU52YlM5cGJYQnNZV2x1Wnk5cGJYQnNZV2x1WnlJZ1ptbHlkRDBpWVhCd2JHbGpZWFJwYjI0aUlIaHRiRzVjOVhWelpTazdJQzgrUEhCaGRHZ2daRDBpVFRBd01EQWxNakF3TkNBeE1EQXdYekF3TURBd0lERXdNREF3SURFeE1EQWxNREF3TURBaUlITjBlV3hsUFNKbWFXeHNJajQ4YzNSNWJHVStMbU52YlM5cGJYQnNZV2x1Wnk5cGJYQnNZV2x1WnlJZ1ptbHlkRDBpWVhCd2JHbGpZWFJwYjI0aUlIaHRiRzVjOVhWelpTazdJQzgrUEhCaGRHZ2daRDBpVFRBd01EQWxNakF3TkNBeE1EQXdYekF3TURBd0lERXdNREF3SURFeE1EQWxNREF3TURBaUlITjBlV3hsUFNKbWFXeHNJajQ4YzNSNWJHVStQZz09IiwKICAgICAgInNpemVzIjogIjE0NHgxNDQiLAogICAgICAidHlwZSI6ICJpbWFnZS9wbmciCiAgICB9CiAgXQp9">
     <style>
         :root {
@@ -36,58 +36,66 @@
             --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-highlight: rgba(255, 255, 255, 0.3);
-            
-            --bubble-bg: rgba(255, 255, 255, 0.15);
-            --bubble-border: rgba(255, 255, 255, 0.25);
-            --bubble-highlight: rgba(255, 255, 255, 0.4);
         }
 
-        .theme-glass {
+        /* Тема по умолчанию */
+        body {
             --background: #000000;
-            --card-bg: rgba(255, 255, 255, 0.06);
-            --card-shadow: rgba(0, 0, 0, 0.4);
+            --card-bg: rgba(255, 255, 255, 0.08);
+            --card-shadow: rgba(0, 0, 0, 0.3);
             --text: #ffffff;
             --primary: #ffffff;
             --secondary: #cccccc;
-            --border-radius: 24px;
+            --border-radius: 20px;
             --text-primary: #ffffff;
             --text-secondary: #aaaaaa;
-            
-            --glass-bg: rgba(255, 255, 255, 0.08);
-            --glass-border: rgba(255, 255, 255, 0.25);
-            --glass-highlight: rgba(255, 255, 255, 0.4);
-            
-            --bubble-bg: rgba(255, 255, 255, 0.12);
-            --bubble-border: rgba(255, 255, 255, 0.3);
-            --bubble-highlight: rgba(255, 255, 255, 0.5);
-            
-            backdrop-filter: blur(30px);
-            -webkit-backdrop-filter: blur(30px);
         }
 
-        .theme-dark {
-            --background: #1a1a1a;
-            --card-bg: rgba(0, 0, 0, 0.3);
+        /* Тема Стекло (Liquid Glass) */
+        .theme-glass {
+            --background: linear-gradient(135deg, #000428, #004e92);
+            --card-bg: rgba(255, 255, 255, 0.12);
             --card-shadow: rgba(0, 0, 0, 0.5);
             --text: #ffffff;
+            --primary: #ffffff;
+            --secondary: rgba(255, 255, 255, 0.7);
+            --border-radius: 24px;
             --text-primary: #ffffff;
-            --text-secondary: #cccccc;
+            --text-secondary: rgba(255, 255, 255, 0.8);
             
-            --bubble-bg: rgba(255, 255, 255, 0.1);
-            --bubble-border: rgba(255, 255, 255, 0.2);
-            --bubble-highlight: rgba(255, 255, 255, 0.3);
+            --glass-bg: rgba(255, 255, 255, 0.15);
+            --glass-border: rgba(255, 255, 255, 0.3);
+            --glass-highlight: rgba(255, 255, 255, 0.5);
+            
+            backdrop-filter: blur(40px) saturate(180%);
+            -webkit-backdrop-filter: blur(40px) saturate(180%);
+            background-attachment: fixed;
         }
 
+        /* Тёмная тема */
+        .theme-dark {
+            --background: #121212;
+            --card-bg: rgba(30, 30, 30, 0.95);
+            --card-shadow: rgba(0, 0, 0, 0.6);
+            --text: #ffffff;
+            --primary: #bb86fc;
+            --secondary: #03dac6;
+            --border-radius: 16px;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+        }
+
+        /* Природная тема */
         .theme-nature {
             --background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
-            --card-bg: rgba(255, 255, 255, 0.1);
-            --card-shadow: rgba(0, 0, 0, 0.3);
+            --card-bg: rgba(255, 255, 255, 0.15);
+            --card-shadow: rgba(0, 0, 0, 0.4);
             --text: #ffffff;
             --primary: #4CAF50;
-            
-            --bubble-bg: rgba(255, 255, 255, 0.15);
-            --bubble-border: rgba(255, 255, 255, 0.25);
-            --bubble-highlight: rgba(255, 255, 255, 0.4);
+            --secondary: #8BC34A;
+            --border-radius: 20px;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.8);
         }
 
         * {
@@ -114,19 +122,16 @@
             width: 100%;
             height: 100%;
             z-index: -1;
-            background: 
-                radial-gradient(circle at 20% 30%, rgba(40, 40, 40, 0.6) 0%, transparent 50%),
-                radial-gradient(circle at 80% 60%, rgba(30, 30, 30, 0.4) 0%, transparent 50%),
-                #000000;
+            background: var(--background);
             background-attachment: fixed;
             pointer-events: none;
         }
 
         .theme-glass .parallax-bg {
             background: 
-                radial-gradient(circle at 20% 30%, rgba(60, 60, 60, 0.8) 0%, transparent 60%),
-                radial-gradient(circle at 80% 60%, rgba(50, 50, 50, 0.6) 0%, transparent 60%),
-                #000000;
+                radial-gradient(circle at 20% 30%, rgba(60, 90, 140, 0.6) 0%, transparent 50%),
+                radial-gradient(circle at 80% 70%, rgba(30, 50, 100, 0.4) 0%, transparent 50%),
+                linear-gradient(135deg, #000428, #004e92);
         }
 
         .app-container {
@@ -137,26 +142,41 @@
             z-index: 1;
         }
 
-        .glass-container {
+        /* Liquid Glass эффект для темы Стекло */
+        .theme-glass .glass-container {
             position: relative;
             border-radius: var(--border-radius);
             overflow: hidden;
             margin-bottom: 30px;
             isolation: isolate;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(50px) saturate(200%);
+            -webkit-backdrop-filter: blur(50px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .glass-container {
+            position: relative;
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            margin-bottom: 30px;
+            background: var(--card-bg);
+            box-shadow: 0 8px 32px var(--card-shadow);
         }
 
         .glass-content {
             position: relative;
-            background: var(--glass-bg);
-            backdrop-filter: blur(40px) brightness(110%);
-            -webkit-backdrop-filter: blur(40px) brightness(110%);
             border-radius: var(--border-radius);
             padding: 30px;
             z-index: 2;
             overflow: hidden;
         }
 
-        .glass-highlight {
+        .theme-glass .glass-highlight {
             position: absolute;
             inset: 0;
             border-radius: var(--border-radius);
@@ -173,7 +193,7 @@
             transition: opacity 0.4s ease;
         }
 
-        .glass-border {
+        .theme-glass .glass-border {
             position: absolute;
             inset: 0;
             border-radius: var(--border-radius);
@@ -181,38 +201,81 @@
             z-index: 4;
             pointer-events: none;
             box-shadow: 
-                inset 0 1px 0 rgba(255, 255, 255, 0.15),
-                inset 0 -1px 0 rgba(255, 255, 255, 0.05),
-                0 0 20px rgba(255, 255, 255, 0.1);
+                inset 0 1px 2px rgba(255, 255, 255, 0.2),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1),
+                0 0 30px rgba(255, 255, 255, 0.1);
         }
 
-        .edge-glow {
+        .theme-glass .edge-glow {
             position: absolute;
             inset: 0;
             border-radius: var(--border-radius);
             background: linear-gradient(
                 45deg,
                 transparent 0%,
-                rgba(255, 255, 255, 0.1) 50%,
+                rgba(255, 255, 255, 0.15) 50%,
                 transparent 100%
             );
             z-index: 5;
             pointer-events: none;
             mix-blend-mode: soft-light;
-            opacity: 0.6;
+            opacity: 0.7;
+            animation: shimmer 8s infinite linear;
         }
 
-        .glass-container:hover .glass-content {
-            backdrop-filter: blur(45px) brightness(120%);
-            -webkit-backdrop-filter: blur(45px) brightness(120%);
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
         }
 
-        .glass-container:hover .glass-highlight {
-            --highlight-opacity: 0.9;
+        .theme-glass .glass-container:hover {
+            backdrop-filter: blur(60px) saturate(220%);
+            -webkit-backdrop-filter: blur(60px) saturate(220%);
+            box-shadow: 
+                0 30px 60px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.25),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.15);
         }
 
-        .glass-container:hover .edge-glow {
-            opacity: 0.8;
+        .theme-glass .glass-container:hover .glass-highlight {
+            --highlight-opacity: 1;
+        }
+
+        .theme-glass .glass-container:hover .edge-glow {
+            opacity: 0.9;
+        }
+
+        /* Жидкие блики для iOS 26 эффекта */
+        .liquid-highlight {
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(
+                ellipse at center,
+                rgba(255, 255, 255, 0.4) 0%,
+                rgba(255, 255, 255, 0.2) 40%,
+                transparent 70%
+            );
+            opacity: 0.3;
+            mix-blend-mode: overlay;
+            pointer-events: none;
+            z-index: 6;
+            animation: liquidMove 15s infinite linear;
+        }
+
+        @keyframes liquidMove {
+            0% { transform: translate(-25%, -25%) rotate(0deg); }
+            100% { transform: translate(-25%, -25%) rotate(360deg); }
+        }
+
+        /* Микро-анимация для текста в стеклянной теме */
+        .theme-glass h1, 
+        .theme-glass h2, 
+        .theme-glass .lesson-name {
+            background: linear-gradient(135deg, #ffffff, rgba(255, 255, 255, 0.8));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         header {
@@ -232,30 +295,24 @@
             letter-spacing: -0.5px;
         }
 
-        .theme-glass h1 {
-            background: linear-gradient(45deg, #ffffff, #e0e0e0);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-shadow: 0 2px 15px rgba(255, 255, 255, 0.2);
-        }
-
         .week-indicator {
-            background: var(--glass-bg);
+            background: var(--card-bg);
             padding: 14px 24px;
             border-radius: 20px;
             font-weight: 600;
             font-size: 1.1rem;
             box-shadow: 0 8px 32px var(--card-shadow);
-            border: 1px solid var(--glass-border);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
             color: var(--text-primary);
         }
 
         .theme-glass .week-indicator {
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .theme-selector {
@@ -263,7 +320,7 @@
         }
 
         .theme-button {
-            background: var(--glass-bg);
+            background: var(--card-bg);
             border: none;
             width: 52px;
             height: 52px;
@@ -274,23 +331,24 @@
             cursor: pointer;
             box-shadow: 0 8px 25px var(--card-shadow);
             color: var(--text-primary);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
             font-size: 1.2rem;
         }
 
         .theme-glass .theme-button {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 35px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .theme-options {
             position: absolute;
             top: 60px;
             right: 0;
-            background: var(--glass-bg);
+            background: var(--card-bg);
             border-radius: var(--border-radius);
             padding: 16px;
             box-shadow: 0 20px 40px var(--card-shadow);
@@ -299,15 +357,16 @@
             gap: 12px;
             z-index: 100;
             width: 170px;
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border);
         }
 
         .theme-glass .theme-options {
-            background: rgba(255, 255, 255, 0.1);
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.5),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .theme-option {
@@ -319,7 +378,6 @@
             transition: all 0.3s ease;
             color: var(--text-primary);
             background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .theme-option:hover {
@@ -344,7 +402,7 @@
         .day-button {
             padding: 16px 22px;
             border-radius: var(--border-radius);
-            background: var(--glass-bg);
+            background: var(--card-bg);
             border: none;
             cursor: pointer;
             font-weight: 600;
@@ -354,22 +412,28 @@
             flex: 1;
             min-width: 90px;
             text-align: center;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            font-size: 1.1rem;
         }
 
         .theme-glass .day-button {
-            background: rgba(255, 255, 255, 0.08);
-            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 10px 35px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
 
         .day-button.active {
             background: rgba(255, 255, 255, 0.2);
             box-shadow: 0 10px 30px rgba(255, 255, 255, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .theme-glass .day-button.active {
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 
+                0 10px 30px rgba(255, 255, 255, 0.15),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2);
         }
 
         .day-title {
@@ -383,34 +447,30 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
 
-        /* Стили для мыльных пузырей */
+        /* Стили для занятий в разных темах */
         .lesson {
             padding: 24px;
             margin-bottom: 24px;
             border-radius: 20px;
-            background: var(--bubble-bg);
+            background: var(--card-bg);
             position: relative;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--bubble-border);
-            box-shadow: 
-                0 8px 32px rgba(0, 0, 0, 0.2),
-                inset 0 1px 1px rgba(255, 255, 255, 0.2),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-            z-index: 1;
+            box-shadow: 0 8px 32px var(--card-shadow);
         }
 
         .theme-glass .lesson {
-            background: var(--bubble-bg);
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
             box-shadow: 
-                0 10px 40px rgba(0, 0, 0, 0.3),
-                inset 0 1px 1px rgba(255, 255, 255, 0.25),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.15);
-            border: 1px solid var(--bubble-border);
+                0 15px 45px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
         }
 
-        .bubble-highlight {
+        .theme-glass .lesson::before {
+            content: '';
             position: absolute;
             top: -50%;
             left: -50%;
@@ -419,51 +479,33 @@
             background: radial-gradient(
                 circle at center,
                 rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.05) 25%,
-                transparent 50%
+                rgba(255, 255, 255, 0.05) 30%,
+                transparent 70%
             );
-            transform: rotate(var(--rotate, 0deg));
-            z-index: -1;
-            opacity: 0.6;
+            opacity: 0.5;
             pointer-events: none;
+            z-index: 1;
+            animation: liquidFloat 20s infinite linear;
         }
 
-        .bubble-overlay {
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            background: linear-gradient(
-                135deg,
-                rgba(255, 255, 255, 0.1) 0%,
-                rgba(255, 255, 255, 0.05) 50%,
-                rgba(255, 255, 255, 0.02) 100%
-            );
-            z-index: -1;
-            pointer-events: none;
-        }
-
-        .bubble-border {
-            position: absolute;
-            inset: 0;
-            border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            z-index: -1;
-            pointer-events: none;
-            box-shadow: 
-                inset 0 1px 2px rgba(255, 255, 255, 0.2),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+        @keyframes liquidFloat {
+            0% { transform: translate(-25%, -25%) rotate(0deg); }
+            100% { transform: translate(-25%, -25%) rotate(360deg); }
         }
 
         .lesson:hover {
-            transform: translateY(-2px);
-            box-shadow: 
-                0 12px 40px rgba(0, 0, 0, 0.3),
-                inset 0 1px 1px rgba(255, 255, 255, 0.25),
-                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 45px var(--card-shadow);
         }
 
-        .lesson:hover .bubble-highlight {
-            opacity: 0.8;
+        .theme-glass .lesson:hover {
+            transform: translateY(-5px) scale(1.01);
+            backdrop-filter: blur(45px);
+            -webkit-backdrop-filter: blur(45px);
+            box-shadow: 
+                0 20px 50px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.2),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.15);
         }
 
         .lesson-number {
@@ -482,6 +524,13 @@
             font-size: 16px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
             z-index: 10;
+        }
+
+        .theme-glass .lesson-number {
+            background: rgba(255, 255, 255, 0.95);
+            box-shadow: 
+                0 4px 15px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
         }
 
         .lesson-time {
@@ -508,8 +557,6 @@
             font-size: 0.95rem;
             font-weight: 700;
             margin-bottom: 16px;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             color: #ffffff;
         }
 
@@ -528,6 +575,24 @@
             border: 1px solid rgba(255, 193, 7, 0.4);
         }
 
+        .theme-glass .lecture {
+            background-color: rgba(10, 132, 255, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .theme-glass .practice {
+            background-color: rgba(48, 209, 88, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
+        .theme-glass .seminar {
+            background-color: rgba(255, 193, 7, 0.25);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+
         .lesson-details {
             display: flex;
             flex-wrap: wrap;
@@ -543,9 +608,14 @@
             padding: 8px 14px;
             background: rgba(255, 255, 255, 0.08);
             border-radius: 8px;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-glass .lesson-detail {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
         }
 
         .empty-schedule {
@@ -561,12 +631,19 @@
             padding: 30px;
             color: var(--text-secondary);
             font-size: 1rem;
-            backdrop-filter: blur(15px);
-            -webkit-backdrop-filter: blur(15px);
             border-radius: var(--border-radius);
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--card-bg);
             margin-top: 30px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .theme-glass footer {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 
+                0 10px 30px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.1);
         }
 
         @media (max-width: 480px) {
@@ -622,7 +699,7 @@
             bottom: 25px;
             left: 50%;
             transform: translateX(-50%);
-            background: var(--glass-bg);
+            background: var(--card-bg);
             padding: 16px 28px;
             border-radius: var(--border-radius);
             box-shadow: 0 10px 35px var(--card-shadow);
@@ -630,10 +707,17 @@
             display: none;
             align-items: center;
             gap: 14px;
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
             color: var(--text-primary);
+        }
+
+        .theme-glass .offline-notification {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 
+                0 15px 40px rgba(0, 0, 0, 0.4),
+                inset 0 1px 1px rgba(255, 255, 255, 0.15);
         }
         
         .refresh-button {
@@ -652,14 +736,43 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
             z-index: 100;
             border: none;
+            font-size: 1.3rem;
+        }
+
+        .theme-glass .refresh-button {
+            background: rgba(255, 255, 255, 0.9);
             backdrop-filter: blur(10px);
             -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
-            font-size: 1.3rem;
+            box-shadow: 
+                0 10px 35px rgba(0, 0, 0, 0.4),
+                inset 0 1px 2px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Специальные SVG фильтры для Liquid Glass эффекта */
+        .svg-filters {
+            position: absolute;
+            width: 0;
+            height: 0;
         }
     </style>
 </head>
 <body>
+    <div class="svg-filters">
+        <svg xmlns="http://www.w3.org/2000/svg" version="1.1">
+            <defs>
+                <filter id="glass-blur">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="8" />
+                </filter>
+                <filter id="liquid-highlight">
+                    <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
+                    <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="highlight" />
+                    <feComposite in="SourceGraphic" in2="highlight" operator="atop" />
+                </filter>
+            </defs>
+        </svg>
+    </div>
+
     <div class="parallax-bg"></div>
     <div class="app-container">
         <header>
@@ -691,6 +804,7 @@
                 <div class="glass-highlight"></div>
                 <div class="glass-border"></div>
                 <div class="edge-glow"></div>
+                <div class="liquid-highlight"></div>
                 
                 <h2 class="day-title">Понедельник</h2>
                 <div id="scheduleContent">
@@ -841,7 +955,7 @@
                     },
                     {
                         time: "14:05-15:40",
-                        name: "Метрология",
+                        name: "Мetрология",
                         room: "2-30",
                         teacher: "Офицерова Н.В.",
                         week: 0,
@@ -941,22 +1055,24 @@
             const glassContainer = document.querySelector('.glass-container');
             const highlight = document.querySelector('.glass-highlight');
             
-            glassContainer.addEventListener('mousemove', (e) => {
-                const rect = glassContainer.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width) * 100;
-                const y = ((e.clientY - rect.top) / rect.height) * 100;
+            if (glassContainer && highlight) {
+                glassContainer.addEventListener('mousemove', (e) => {
+                    const rect = glassContainer.getBoundingClientRect();
+                    const x = ((e.clientX - rect.left) / rect.width) * 100;
+                    const y = ((e.clientY - rect.top) / rect.height) * 100;
+                    
+                    glassContainer.style.setProperty('--mouse-x', `${x}%`);
+                    glassContainer.style.setProperty('--mouse-y', `${y}%`);
+                });
                 
-                glassContainer.style.setProperty('--mouse-x', `${x}%`);
-                glassContainer.style.setProperty('--mouse-y', `${y}%`);
-            });
-            
-            glassContainer.addEventListener('mouseenter', () => {
-                glassContainer.style.setProperty('--highlight-opacity', '0.9');
-            });
-            
-            glassContainer.addEventListener('mouseleave', () => {
-                glassContainer.style.setProperty('--highlight-opacity', '0');
-            });
+                glassContainer.addEventListener('mouseenter', () => {
+                    glassContainer.style.setProperty('--highlight-opacity', '0.9');
+                });
+                
+                glassContainer.addEventListener('mouseleave', () => {
+                    glassContainer.style.setProperty('--highlight-opacity', '0');
+                });
+            }
             
             renderSchedule();
             
@@ -988,13 +1104,9 @@
                 const pairNumber = getPairNumber(lesson.time);
                 const typeClass = lesson.type === "лекция" ? "lecture" : 
                                 lesson.type === "практика" ? "practice" : "seminar";
-                const randomRotation = Math.floor(Math.random() * 360);
                 
                 html += `
                     <div class="lesson">
-                        <div class="bubble-highlight" style="--rotate: ${randomRotation}deg"></div>
-                        <div class="bubble-overlay"></div>
-                        <div class="bubble-border"></div>
                         <div class="lesson-number">${pairNumber}</div>
                         <div class="lesson-time">${lesson.time}</div>
                         <div class="lesson-type ${typeClass}">${lesson.type}</div>
