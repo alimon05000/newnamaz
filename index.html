@@ -36,6 +36,10 @@
             --glass-bg: rgba(255, 255, 255, 0.1);
             --glass-border: rgba(255, 255, 255, 0.2);
             --glass-highlight: rgba(255, 255, 255, 0.3);
+            
+            --bubble-bg: rgba(255, 255, 255, 0.15);
+            --bubble-border: rgba(255, 255, 255, 0.25);
+            --bubble-highlight: rgba(255, 255, 255, 0.4);
         }
 
         .theme-glass {
@@ -53,6 +57,10 @@
             --glass-border: rgba(255, 255, 255, 0.25);
             --glass-highlight: rgba(255, 255, 255, 0.4);
             
+            --bubble-bg: rgba(255, 255, 255, 0.12);
+            --bubble-border: rgba(255, 255, 255, 0.3);
+            --bubble-highlight: rgba(255, 255, 255, 0.5);
+            
             backdrop-filter: blur(30px);
             -webkit-backdrop-filter: blur(30px);
         }
@@ -64,6 +72,10 @@
             --text: #ffffff;
             --text-primary: #ffffff;
             --text-secondary: #cccccc;
+            
+            --bubble-bg: rgba(255, 255, 255, 0.1);
+            --bubble-border: rgba(255, 255, 255, 0.2);
+            --bubble-highlight: rgba(255, 255, 255, 0.3);
         }
 
         .theme-nature {
@@ -72,6 +84,10 @@
             --card-shadow: rgba(0, 0, 0, 0.3);
             --text: #ffffff;
             --primary: #4CAF50;
+            
+            --bubble-bg: rgba(255, 255, 255, 0.15);
+            --bubble-border: rgba(255, 255, 255, 0.25);
+            --bubble-highlight: rgba(255, 255, 255, 0.4);
         }
 
         * {
@@ -367,22 +383,87 @@
             text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
         }
 
+        /* Стили для мыльных пузырей */
         .lesson {
             padding: 24px;
             margin-bottom: 24px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.05);
+            background: var(--bubble-bg);
             position: relative;
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--bubble-border);
+            box-shadow: 
+                0 8px 32px rgba(0, 0, 0, 0.2),
+                inset 0 1px 1px rgba(255, 255, 255, 0.2),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            z-index: 1;
         }
 
         .theme-glass .lesson {
-            background: rgba(255, 255, 255, 0.06);
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: var(--bubble-bg);
+            box-shadow: 
+                0 10px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.25),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.15);
+            border: 1px solid var(--bubble-border);
+        }
+
+        .bubble-highlight {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(
+                circle at center,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.05) 25%,
+                transparent 50%
+            );
+            transform: rotate(var(--rotate, 0deg));
+            z-index: -1;
+            opacity: 0.6;
+            pointer-events: none;
+        }
+
+        .bubble-overlay {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            background: linear-gradient(
+                135deg,
+                rgba(255, 255, 255, 0.1) 0%,
+                rgba(255, 255, 255, 0.05) 50%,
+                rgba(255, 255, 255, 0.02) 100%
+            );
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        .bubble-border {
+            position: absolute;
+            inset: 0;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            z-index: -1;
+            pointer-events: none;
+            box-shadow: 
+                inset 0 1px 2px rgba(255, 255, 255, 0.2),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .lesson:hover {
+            transform: translateY(-2px);
+            box-shadow: 
+                0 12px 40px rgba(0, 0, 0, 0.3),
+                inset 0 1px 1px rgba(255, 255, 255, 0.25),
+                inset 0 -1px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        .lesson:hover .bubble-highlight {
+            opacity: 0.8;
         }
 
         .lesson-number {
@@ -907,9 +988,13 @@
                 const pairNumber = getPairNumber(lesson.time);
                 const typeClass = lesson.type === "лекция" ? "lecture" : 
                                 lesson.type === "практика" ? "practice" : "seminar";
+                const randomRotation = Math.floor(Math.random() * 360);
                 
                 html += `
                     <div class="lesson">
+                        <div class="bubble-highlight" style="--rotate: ${randomRotation}deg"></div>
+                        <div class="bubble-overlay"></div>
+                        <div class="bubble-border"></div>
                         <div class="lesson-number">${pairNumber}</div>
                         <div class="lesson-time">${lesson.time}</div>
                         <div class="lesson-type ${typeClass}">${lesson.type}</div>
